@@ -1,0 +1,82 @@
+﻿<Window x:Class="SdxScope.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SdxScope"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
+        mc:Ignorable="d"
+        Title="SDX Scope" Height="550" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="793*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+            <RowDefinition Height="15"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" Grid.ColumnSpan="2">
+            <MenuItem Header="File"/>
+            <MenuItem Header="Board Configuration"/>
+            <MenuItem Header="Window"/>
+            <MenuItem Header="About"/>
+        </Menu>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <ScottPlot:WpfPlot x:Name="WpfPlot1" />
+            <StackPanel Grid.Column="2" Orientation="Vertical">
+            <TabControl Height="20">
+                <TabItem Header="Channel 1"/>
+                <TabItem Header="Channel 2"/>
+                <TabItem Header="Channel 3"/>
+                <TabItem Header="Channel 4"/>
+            </TabControl>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 10">
+                        <Button HorizontalAlignment="Left" 
+                            Content="Connect" FontSize="14" FontWeight="Medium"
+                            Margin="5,0,5,0" Height="20" Width="80" 
+                            Command="{Binding ConnectBoardCommand}"/>
+                        <Button HorizontalAlignment="Right" 
+                            Content="Get Firmware" FontSize="14" FontWeight="Medium" 
+                            Margin="5,0,5,0" Height="20" Width="100" 
+                            Command="{Binding GetBoardFirmware}"/>
+                        <Button HorizontalAlignment="Right" 
+                            Content="Disconnect" FontSize="14" FontWeight="Medium" 
+                            Margin="5,0,5,0" Height="20" Width="80" 
+                            Command="{Binding DisconnectBoardCommand}"/>
+                    </StackPanel>
+                    
+                    <TextBlock Text="Time Base Controls" FontSize="14" FontWeight="Medium" Margin="5" Height="20"/>
+                    <Slider Minimum="10" Maximum="500" Margin="10"/>
+                    <TextBlock Text="Voltage Controls"   FontSize="14" FontWeight="Medium" Margin="5" Height="20"/>
+                    <Slider Minimum="10" Maximum="500" Margin="10"/>
+                    
+                    <TextBlock Text="Toggle Options"   FontSize="14" FontWeight="Medium" Margin="5" Height="20"/>
+                    <CheckBox  HorizontalAlignment="Left" Margin="15, 2, 0, 2" Content="Enable"/>
+                    <CheckBox  HorizontalAlignment="Left" Margin="15, 2, 0, 2" Content="Auto Trigger"/>
+                    <CheckBox  HorizontalAlignment="Left" Margin="15, 2, 0, 2" Content="Gain"/>
+                    <CheckBox  HorizontalAlignment="Left" Margin="15, 2, 0, 2" Content="DAC Output"/>
+                    <TextBlock HorizontalAlignment="Left" FontSize="14" FontWeight="Medium" Margin="5" Text="Coupling"/>
+                    <RadioButton GroupName="LanguageGroup" HorizontalAlignment="Left" Margin="15,0,0,0" Content="AC Coupling"/>
+                    <RadioButton GroupName="LanguageGroup" HorizontalAlignment="Left" Margin="15,0,0,0" Content="DC Coupling"/>
+                    <Button HorizontalAlignment="Right" 
+                        Content="TestMsg_1" FontSize="14" FontWeight="Medium" 
+                        Margin="10" Height="20" Width="80" 
+                        Command="{Binding TestMsg_1}"/>
+                    <TextBlock Name="VersionLabel" HorizontalAlignment="Center"
+                        Margin="2,0,5,0" Height="20" Width="20"
+                        FontSize="14" FontWeight="Medium"
+                        Text="{Binding Path=Fw, Mode = OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <TextBlock Grid.Row="1" Text="Status" Margin="3,399,0,0" Grid.Column="1" Grid.RowSpan="2"/>
+    </Grid>
+</Window>
