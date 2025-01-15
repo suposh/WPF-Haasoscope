@@ -4,32 +4,59 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SdxScope"
-        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
         mc:Ignorable="d"
         Title="SDX Scope" Height="550" Width="800">
+    <Window.Resources>
+        <Style x:Key="RoundedButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="grid">
+                            <Border x:Name="border" CornerRadius="5" BorderBrush="Navy" BorderThickness="2" Background="LightGray">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      TextElement.FontWeight="Normal">
+                                </ContentPresenter>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#BEE6FD"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#3C7FB1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#2C628B"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" TargetName="grid" Value="0.25"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7*"/>
-            <ColumnDefinition Width="793*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="15"/>
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0" Grid.ColumnSpan="2">
+        <Menu Grid.Row="0">
             <MenuItem Header="File"/>
             <MenuItem Header="Board Configuration"/>
             <MenuItem Header="Window"/>
             <MenuItem Header="About"/>
         </Menu>
-        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="6*"/>
                 <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
-            <ScottPlot:WpfPlot x:Name="WpfPlot1" />
-            <StackPanel Grid.Column="2" Orientation="Vertical">
+            <oxy:PlotView Margin="10" Grid.Column="0" Model="{Binding Model}" />
+            <StackPanel Grid.Column="1" Orientation="Vertical">
             <TabControl Height="20">
                 <TabItem Header="Channel 1"/>
                 <TabItem Header="Channel 2"/>
@@ -37,26 +64,67 @@
                 <TabItem Header="Channel 4"/>
             </TabControl>
                 <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 10">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 5, 0, 0">
                         <Button HorizontalAlignment="Left" 
-                            Content="Connect" FontSize="14" FontWeight="Medium"
-                            Margin="5,0,5,0" Height="20" Width="80" 
+                            Style="{StaticResource RoundedButtonStyle}"
+                            Content="Connect" FontSize="14" FontWeight="ExtraBold"
+                            Margin="5,0,5,0" Width="80" 
                             Command="{Binding ConnectBoardCommand}"/>
                         <Button HorizontalAlignment="Right" 
-                            Content="Get Firmware" FontSize="14" FontWeight="Medium" 
-                            Margin="5,0,5,0" Height="20" Width="100" 
+                            Style="{StaticResource RoundedButtonStyle}"
+                            Content="Get Firmware" FontSize="14" FontWeight="Bold"
+                            Margin="5,0,5,0" Width="100" 
                             Command="{Binding GetBoardFirmware}"/>
                         <Button HorizontalAlignment="Right" 
-                            Content="Disconnect" FontSize="14" FontWeight="Medium" 
-                            Margin="5,0,5,0" Height="20" Width="80" 
+                            Style="{StaticResource RoundedButtonStyle}"
+                            Content="Disconnect" FontSize="14" FontWeight="Bold"
+                            Margin="5,0,5,0" Width="80" 
                             Command="{Binding DisconnectBoardCommand}"/>
                     </StackPanel>
-                    
-                    <TextBlock Text="Time Base Controls" FontSize="14" FontWeight="Medium" Margin="5" Height="20"/>
-                    <Slider Minimum="10" Maximum="500" Margin="10"/>
-                    <TextBlock Text="Voltage Controls"   FontSize="14" FontWeight="Medium" Margin="5" Height="20"/>
-                    <Slider Minimum="10" Maximum="500" Margin="10"/>
-                    
+                    <Separator/>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,5">
+                        <TextBlock 
+                            Text="Time Base"
+                            Width="100" 
+                            FontSize="14" 
+                            FontWeight="Medium" 
+                            Margin="5"/>
+                        <Button 
+                            Style="{StaticResource RoundedButtonStyle}" 
+                            Content="Increase" 
+                            Margin="20,0,0,0" 
+                            Width="80" 
+                            Command="{Binding DownsampleIncrease}"/>
+                        <Button 
+                            Style="{StaticResource RoundedButtonStyle}" 
+                            Content="Decrease" 
+                            Width="80" 
+                            Margin="20,0,20,0" 
+                            Command="{Binding DownsampleDecrease}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <TextBlock 
+                            Width="100" 
+                            Text="Voltage Controls" 
+                            FontSize="14" 
+                            FontWeight="Medium"
+                            Margin="5" 
+                            Height="20"/>
+                        <Button  
+                            Style="{StaticResource RoundedButtonStyle}" 
+                            HorizontalAlignment="Left" 
+                            Content="Increase" 
+                            Width="80" 
+                            Margin="20,0,0,0"
+                            Command="{Binding DataScaleIncrease}"/>
+                        <Button  
+                            Style="{StaticResource RoundedButtonStyle}" 
+                            HorizontalAlignment="Right" 
+                            Content="Decrease" 
+                            Width="80" 
+                            Margin="20,0,0,0"
+                            Command="{Binding DataScaleDecrease}"/>
+                    </StackPanel>
                     <TextBlock Text="Toggle Options"   FontSize="14" FontWeight="Medium" Margin="5" Height="20"/>
                     <CheckBox  HorizontalAlignment="Left" Margin="15, 2, 0, 2" Content="Enable"/>
                     <CheckBox  HorizontalAlignment="Left" Margin="15, 2, 0, 2" Content="Auto Trigger"/>
@@ -65,18 +133,22 @@
                     <TextBlock HorizontalAlignment="Left" FontSize="14" FontWeight="Medium" Margin="5" Text="Coupling"/>
                     <RadioButton GroupName="LanguageGroup" HorizontalAlignment="Left" Margin="15,0,0,0" Content="AC Coupling"/>
                     <RadioButton GroupName="LanguageGroup" HorizontalAlignment="Left" Margin="15,0,0,0" Content="DC Coupling"/>
-                    <Button HorizontalAlignment="Right" 
-                        Content="TestMsg_1" FontSize="14" FontWeight="Medium" 
-                        Margin="10" Height="20" Width="80" 
+                    <Button HorizontalAlignment="Left" 
+                        Style="{StaticResource RoundedButtonStyle}"
+                        Content="Start Loop"
+                        Margin="10" Height="25" Width="100" 
                         Command="{Binding TestMsg_1}"/>
-                    <TextBlock Name="VersionLabel" HorizontalAlignment="Center"
-                        Margin="2,0,5,0" Height="20" Width="20"
-                        FontSize="14" FontWeight="Medium"
-                        Text="{Binding Path=Fw, Mode = OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="14" FontWeight="Medium"> Firmware Version </TextBlock>
+                        <TextBlock Name="VersionLabel"
+                            Margin="5,0,5,0"
+                            FontSize="14" FontWeight="Medium"
+                            Text="{Binding Path=Fw, Mode = OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Grid>
 
-        <TextBlock Grid.Row="1" Text="Status" Margin="3,399,0,0" Grid.Column="1" Grid.RowSpan="2"/>
+        <TextBlock Grid.Row="2" Text="Status" Margin="5,0,0,0" Grid.Column="1" Grid.RowSpan="2"/>
     </Grid>
 </Window>

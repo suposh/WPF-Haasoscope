@@ -19,7 +19,7 @@ namespace SdxScope
             get { return connectionStatus;  }
             set { connectionStatus = value; }
         }
-        public Thread readThread;
+        
 
         public Communication(ref SerialPort devicePort)
         {
@@ -38,34 +38,16 @@ namespace SdxScope
         {
             DevicePort.Open();
             ConnectionStatus = true;
-            readThread = new Thread(Read);
+
             //readThread.Start();
         }
         public void DisconnectBoard()
         {
             ConnectionStatus = false;
-            if (readThread.IsAlive)
-                readThread.Join();
             DevicePort.Close();
         }
 
-        public static void Read()
-        {
-            byte[] tempBuffer = new byte[10];
-            while (ConnectionStatus)
-            {
-                try
-                {
-                    int message = DevicePort.Read(tempBuffer, 0, 10);
-                    Trace.WriteLine($"Count: {message:X}");
-                    Trace.WriteLine($"Got: {BitConverter.ToString(tempBuffer, 0)}");
-                }
-                catch (Exception e)
-                {
-                    Trace.WriteLine($"Read Failed" + $"{e.Message}");
-                }
-            }
-        }
+        
     }
     
 }

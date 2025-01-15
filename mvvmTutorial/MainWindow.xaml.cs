@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.IO.Ports;
+using OxyPlot;
+using OxyPlot.Series;
 
 namespace SdxScope
 {
@@ -8,13 +10,10 @@ namespace SdxScope
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             InitializeComponent();
-            MainWindowViewModel vm = new MainWindowViewModel(WpfPlot1);
-            ScottPlot.Image bgImage = new("I://WinUI Haasoscope/mvvmTutorial/static_image.jpg");
-            WpfPlot1.Plot.DataBackground.Image = bgImage;
+            MainWindowViewModel vm = new MainWindowViewModel();
             DataContext = vm;
         }
     }
