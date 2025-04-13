@@ -12,12 +12,14 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid x:Name="grid">
-                            <Border x:Name="border" CornerRadius="5" BorderBrush="Navy" BorderThickness="2" Background="LightGray">
+                            <Grid x:Name="grid">
+                            <Border x:Name="border" CornerRadius="5" BorderBrush="DarkGray" BorderThickness="2" Background="LightGray">
                                 <ContentPresenter HorizontalAlignment="Center"
                                       VerticalAlignment="Center"
-                                      TextElement.FontWeight="Normal">
-                                </ContentPresenter>
+                                      TextElement.FontWeight="Bold"
+                                      TextElement.FontFamily="Cascadia Code"
+                                      TextElement.FontSize="14"/>
+                                
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -55,7 +57,7 @@
                 <ColumnDefinition Width="6*"/>
                 <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
-            <oxy:PlotView Margin="10" Grid.Column="0" Model="{Binding Model}" />
+            <oxy:PlotView Margin="10" Grid.Column="0" Model="{Binding Model}" Background="LightGray"/>
             <StackPanel Grid.Column="1" Orientation="Vertical">
             <TabControl Height="20">
                 <TabItem Header="Channel 1"/>
@@ -64,25 +66,35 @@
                 <TabItem Header="Channel 4"/>
             </TabControl>
                 <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 5, 0, 0">
+                    <StackPanel VerticalAlignment="Bottom"  Background="PaleTurquoise" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Bottom" FontSize="14" FontWeight="Medium"> Firmware Version :</TextBlock>
+                        <TextBlock VerticalAlignment="Bottom" Name="VersionLabel"
+                            Margin="5,0,5,0"
+                            FontSize="14" FontWeight="Medium"
+                            Text="{Binding Path=Fw, Mode = OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="30" HorizontalAlignment="Center" Margin="0, 10, 0, 5">
                         <Button HorizontalAlignment="Left" 
                             Style="{StaticResource RoundedButtonStyle}"
-                            Content="Connect" FontSize="14" FontWeight="ExtraBold"
-                            Margin="5,0,5,0" Width="80" 
+                            FontFamily="Cascadia Code"
+                            Content="Connect" FontSize="12" FontWeight="Bold"
+                            Margin="0,0,5,0" Width="80"
                             Command="{Binding ConnectBoardCommand}"/>
                         <Button HorizontalAlignment="Right" 
                             Style="{StaticResource RoundedButtonStyle}"
-                            Content="Get Firmware" FontSize="14" FontWeight="Bold"
-                            Margin="5,0,5,0" Width="100" 
+                            FontFamily="Cascadia Code"
+                            Content="Get Firmware" FontSize="12" FontWeight="Bold"
+                            Margin="5,0,5,0" Width="110" 
                             Command="{Binding GetBoardFirmware}"/>
                         <Button HorizontalAlignment="Right" 
                             Style="{StaticResource RoundedButtonStyle}"
-                            Content="Disconnect" FontSize="14" FontWeight="Bold"
-                            Margin="5,0,5,0" Width="80" 
+                            FontFamily="Cascadia Code"
+                            Content="Disconnect" FontSize="12" FontWeight="Bold"
+                            Margin="5,0,0,0" Width="90" 
                             Command="{Binding DisconnectBoardCommand}"/>
                     </StackPanel>
                     <Separator/>
-                    <StackPanel Orientation="Horizontal" Margin="0,10,0,5">
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                         <TextBlock 
                             Text="Time Base"
                             Width="100" 
@@ -90,19 +102,20 @@
                             FontWeight="Medium" 
                             Margin="5"/>
                         <Button 
-                            Style="{StaticResource RoundedButtonStyle}" 
+                            Style="{StaticResource RoundedButtonStyle}"
                             Content="Increase" 
-                            Margin="20,0,0,0" 
+                            Margin="20,0,0,0" HorizontalAlignment="Right"
                             Width="80" 
                             Command="{Binding DownsampleIncrease}"/>
                         <Button 
                             Style="{StaticResource RoundedButtonStyle}" 
                             Content="Decrease" 
                             Width="80" 
-                            Margin="20,0,20,0" 
+                            Margin="20,0,20,0" HorizontalAlignment="Right"
                             Command="{Binding DownsampleDecrease}"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <Separator/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                         <TextBlock 
                             Width="100" 
                             Text="Voltage Controls" 
@@ -112,21 +125,38 @@
                             Height="20"/>
                         <Button  
                             Style="{StaticResource RoundedButtonStyle}" 
-                            HorizontalAlignment="Left" 
                             Content="Increase" 
                             Width="80" 
-                            Margin="20,0,0,0"
+                            Margin="20,0,0,0" HorizontalAlignment="Right"
                             Command="{Binding DataScaleIncrease}"/>
                         <Button  
                             Style="{StaticResource RoundedButtonStyle}" 
-                            HorizontalAlignment="Right" 
                             Content="Decrease" 
                             Width="80" 
-                            Margin="20,0,0,0"
+                            Margin="20,0,0,0" HorizontalAlignment="Right"
                             Command="{Binding DataScaleDecrease}"/>
                     </StackPanel>
+                    <Separator/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                        <TextBlock 
+                            Width="100" 
+                            Text="Trigger Position" 
+                            FontSize="14" 
+                            FontWeight="Medium"
+                            Margin="5" 
+                            Height="20"/>
+                        <Slider
+                            Margin="20,8,0,0"
+                            Width="180"
+                            Orientation="Horizontal" 
+                            Minimum="0" 
+                            Maximum="255" 
+                            Value="{Binding TriggerThreshold_ValueChanged}">
+                        </Slider> 
+                    </StackPanel>
+                    <Separator/>
                     <TextBlock Text="Toggle Options"   FontSize="14" FontWeight="Medium" Margin="5" Height="20"/>
-                    <CheckBox  HorizontalAlignment="Left" Margin="15, 2, 0, 2" Content="Enable"/>
+                    <CheckBox  HorizontalAlignment="Left" Margin="15, 2, 0, 2" Content="Trigger Enable" Command="{Binding ChannelTrigger}"/>
                     <CheckBox  HorizontalAlignment="Left" Margin="15, 2, 0, 2" Content="Auto Trigger"/>
                     <CheckBox  HorizontalAlignment="Left" Margin="15, 2, 0, 2" Content="Gain"/>
                     <CheckBox  HorizontalAlignment="Left" Margin="15, 2, 0, 2" Content="DAC Output"/>
@@ -138,13 +168,6 @@
                         Content="Start Loop"
                         Margin="10" Height="25" Width="100" 
                         Command="{Binding TestMsg_1}"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="14" FontWeight="Medium"> Firmware Version </TextBlock>
-                        <TextBlock Name="VersionLabel"
-                            Margin="5,0,5,0"
-                            FontSize="14" FontWeight="Medium"
-                            Text="{Binding Path=Fw, Mode = OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Grid>

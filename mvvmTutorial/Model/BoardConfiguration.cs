@@ -1,11 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using System.IO.Ports;
-using System.Windows.Media.Animation;
-using System;
-using ScottPlot.TickGenerators.TimeUnits;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Xml;
 
 namespace SdxScope
 {
@@ -232,6 +227,24 @@ namespace SdxScope
             }
         }
 
+        private Byte triggerThreshold;
+
+        /// <value>
+        /// Command 127
+        /// </value>
+        public Byte TriggerThreshold
+        {
+            get { return triggerThreshold; }
+            set
+            {
+                byte[] data = new byte[] { (byte)(127), value };
+                //data = data;
+                DevicePort.Write(data, 0, data.Length);
+                TraceMessage(BitConverter.ToString(data, 0));
+                triggerThreshold = value;
+            }
+        }
+
         private UInt16 triggerTime;
 
         /// <value>
@@ -246,6 +259,23 @@ namespace SdxScope
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
                 triggerTime = value; 
+            }
+        }
+
+        private byte triggerEnable;
+
+        /// <value>
+        /// Command 130
+        /// </value>
+        public byte TriggerEnable
+        {
+            get { return triggerEnable; }
+            set
+            {
+                byte[] data = new byte[] { 130 , value };
+                DevicePort.Write(data, 0, data.Length);
+                TraceMessage(BitConverter.ToString(data, 0));
+                triggerEnable = value;
             }
         }
 
@@ -368,7 +398,8 @@ namespace SdxScope
             TicksToWait         = 1;
 
             HiResEnabled        = true;
-            TriggerTime         = 1;
+            TriggerTime         = 8193;
+            TriggerThreshold    = 100;
             SerialWaitMax       = 100;
             DevicePort.Write(new byte[] { 0x00 }, 0, 1);
             DevicePort.Write(new byte[] { 0x64 }, 0, 1);
@@ -398,6 +429,9 @@ namespace SdxScope
 
             TriggerPaddingCount = 0x0101;
             TriggerPaddingCount = 0x0101;
+
+            DevicePort.Write(new byte[] { 127, 50 }, 0, 2);
+            //DevicePort.Write(new byte[] { 139 }, 0, 1);
         }
     }
 }
