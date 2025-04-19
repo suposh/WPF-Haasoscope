@@ -2,14 +2,14 @@
 using System.IO.Ports;
 using System.Diagnostics;
 using System.Windows.Threading;
+using OxyPlot.Series;
 using OxyPlot.Axes;
 using OxyPlot;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace SdxScope
 {
-    using OxyPlot.Series;
-    using System.Threading.Channels;
-    using WinRT;
 
     internal partial class MainWindowViewModel : ViewModelBase
     {
@@ -17,7 +17,18 @@ namespace SdxScope
         Byte[] msg = { 0, 20, 30, 142 };
         public Communication Uart;
         public SerialPort DevicePort;
-        public BoardConfiguration BoardHandle;
+
+        private BoardConfiguration? _boardHandle;
+        public BoardConfiguration? BoardHandle
+        {
+            get => _boardHandle;
+            set
+            {
+                _boardHandle = value;
+                OnPropertyChanged(); // ← this uses CallerMemberName, so no need to pass the string
+            }
+        }
+
         //public PlotModel PlotContainer { get; set; }
         public LineSeries Channel_A, Channel_B, Channel_C, Channel_D;
 
@@ -37,17 +48,6 @@ namespace SdxScope
         DispatcherTimer DataFetchTimer;
         const int constantInterval = 50;//milliseconds
 
-        private string fw;
-        public string Fw
-        {
-            get { return fw; }
-            set
-            {
-                fw = "V" + value;
-                OnPropertyChanged();
-            }
-        }
-
         public RelayCommand AddCommand { get; set; }
         public RelayCommand DeleteCommand { get; set; }
         public RelayCommand ConnectBoardCommand { get; set; }
@@ -59,15 +59,13 @@ namespace SdxScope
         public RelayCommand DataScaleIncrease { get; set; }
         public RelayCommand DataScaleDecrease { get; set; }
         public RelayCommand ChannelTrigger { get; set; }
-        //public RelayCommand TriggerThreshold_ValueChanged { get; set; }
-        
 
         public MainWindowViewModel()
         {
             //Items = new ObservableCollection<Item>();
             DevicePort = new SerialPort();
             Uart = new Communication(ref DevicePort);
-            Model = new PlotModel { Title = "Volto", Subtitle = "using OxyPlot" };
+            Model = new PlotModel { Subtitle = "SDX-Oscilloscope" };
             Model.Axes.Add(new LinearAxis { Position = AxisPosition.Left});
             Channel_A = new LineSeries()
             {
@@ -77,7 +75,7 @@ namespace SdxScope
                 Color = OxyPlot.OxyColors.Red,
                 //Smooth = true
             };
-            //Channel_A.InterpolationAlgorithm = InterpolationAlgorithms.UniformCatmullRomSpline;
+            Channel_A.InterpolationAlgorithm = InterpolationAlgorithms.UniformCatmullRomSpline;
             
             Channel_B = new LineSeries()
             {
@@ -87,7 +85,7 @@ namespace SdxScope
                 Color = OxyPlot.OxyColors.Green,
                 //Smooth = true
             };
-            Channel_B.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
+            Channel_B.InterpolationAlgorithm = InterpolationAlgorithms.UniformCatmullRomSpline;
 
             Channel_C = new LineSeries()
             {
@@ -97,7 +95,7 @@ namespace SdxScope
                 Color = OxyPlot.OxyColors.Blue,
                 //Smooth = true
             };
-            Channel_C.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
+            Channel_C.InterpolationAlgorithm = InterpolationAlgorithms.UniformCatmullRomSpline;
 
             Channel_D = new LineSeries()
             {
@@ -107,7 +105,7 @@ namespace SdxScope
                 Color = OxyPlot.OxyColors.Coral,
                 //Smooth = true
             };
-            Channel_D.InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline;
+            Channel_D.InterpolationAlgorithm = InterpolationAlgorithms.UniformCatmullRomSpline;
 
             this.Model.Series.Add(Channel_A);
             this.Model.Series.Add(Channel_B);
@@ -116,7 +114,7 @@ namespace SdxScope
 
             this.OnPropertyChanged("Model");
             DataFetchTimer = new();
-            DataFetchTimer.Interval = TimeSpan.FromMilliseconds(100);
+            DataFetchTimer.Interval = TimeSpan.FromMilliseconds(10);
             DataFetchTimer.Tick += Timer_Tick;
 
             DisconnectBoardCommand = new RelayCommand(
@@ -158,7 +156,7 @@ namespace SdxScope
             );
 
             GetBoardFirmware = new RelayCommand(
-                execute => { Fw = BoardHandle.BoardFirmware.ToString(); }, 
+                execute => { BoardHandle.BoardFirmware.ToString(); }, 
                 canExecute => (Communication.ConnectionStatus is true)
             );
 
@@ -193,6 +191,7 @@ namespace SdxScope
         {
             Trace.WriteLine(e);
         }
+
         public void Read()
         {
             byte[] inputBuf2048 = new byte[2048];
@@ -242,62 +241,67 @@ namespace SdxScope
 
         }
 
+
         private void Timer_Tick(object? sender, EventArgs e)
         {
             byte[] inputBuf2048 = new byte[2048];
-            int[] dataX = Enumerable.Range(0, 512).ToArray();
             int totBytesRead = 0;
             var Channel_A = (LineSeries)this.Model.Series[0];
             var Channel_B = (LineSeries)this.Model.Series[1];
             var Channel_C = (LineSeries)this.Model.Series[2];
             var Channel_D = (LineSeries)this.Model.Series[3];
+
             if (DataStreamStatus)
             {
-                //DevicePort.Write(new byte[] { 101 }, 0, 1);
-                //BoardHandle.RollingEnabled = true;
                 DevicePort.Write(new byte[] { 100 }, 0, 1);
-                DevicePort.Write(new byte[] {  10 }, 0, 1);
+                DevicePort.Write(new byte[] { 10 }, 0, 1);
+
                 while (totBytesRead < 2048)
                 {
                     try
                     {
                         totBytesRead += DevicePort.Read(inputBuf2048, totBytesRead, 2048 - totBytesRead);
-                        Delay(10);
-                        //Trace.WriteLine(BitConverter.ToString(inputBuf2048, 0));
-                        //Trace.WriteLine($"readCount: {totBytesRead}");
                     }
                     catch (Exception er)
                     {
-                        Trace.WriteLine($"Read Failed" + $"{er.Message}");
+                        Trace.WriteLine($"Read Failed: {er.Message}");
                         return;
                     }
                 }
-                //Trace.WriteLine($"Read Complete: {totBytesRead}");
 
                 lock (Model.SyncRoot)
                 {
-                    
+                    List<DataPoint> aPoints = new(512);
+                    List<DataPoint> bPoints = new(512);
+                    List<DataPoint> cPoints = new(512);
+                    List<DataPoint> dPoints = new(512);
+
+                    for (int x = 0; x < 512; x++)
+                    {
+                        aPoints.Add(new DataPoint(x, inputBuf2048[x]));
+                        bPoints.Add(new DataPoint(x, inputBuf2048[512 + x]));
+                        cPoints.Add(new DataPoint(x, inputBuf2048[1024 + x]));
+                        dPoints.Add(new DataPoint(x, inputBuf2048[1536 + x]));
+                    }
+
                     Channel_A.Points.Clear();
                     Channel_B.Points.Clear();
                     Channel_C.Points.Clear();
                     Channel_D.Points.Clear();
 
-                    foreach (var x_idx in dataX)
-                    {
-                        Channel_A.Points.Add(new DataPoint(x_idx, inputBuf2048[0 + x_idx]));
-                        Channel_B.Points.Add(new DataPoint(x_idx, inputBuf2048[0 +  512 - 1 + x_idx]));
-                        Channel_C.Points.Add(new DataPoint(x_idx, inputBuf2048[0 + 1024 - 1 + x_idx]));
-                        Channel_D.Points.Add(new DataPoint(x_idx, inputBuf2048[0 + 1536 - 1 + x_idx]));
-                        ////this.RaisePropertyChanged("PlotModel");
-                    }
+                    Channel_A.Points.AddRange(aPoints);
+                    Channel_B.Points.AddRange(bPoints);
+                    Channel_C.Points.AddRange(cPoints);
+                    Channel_D.Points.AddRange(dPoints);
                 }
+
                 Model.InvalidatePlot(true);
             }
 
-            totBytesRead = 0;
+            // Adjust timer interval
             var now = DateTime.Now;
             var nowMilliseconds = (int)now.TimeOfDay.TotalMilliseconds;
-            var timerInterval = constantInterval - nowMilliseconds % constantInterval + 5;//5: sometimes the tick comes few millisecs early
+            var timerInterval = constantInterval - nowMilliseconds % constantInterval + 5; //5: sometimes the tick comes few millisecs early
             //Trace.WriteLine($"Interval: {timerInterval}");
             DataFetchTimer.Interval = TimeSpan.FromMilliseconds(timerInterval);
         }

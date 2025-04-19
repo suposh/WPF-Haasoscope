@@ -242,6 +242,7 @@ namespace SdxScope
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
                 triggerThreshold = value;
+                OnPropertyChanged();
             }
         }
 
@@ -399,8 +400,9 @@ namespace SdxScope
 
             HiResEnabled        = true;
             TriggerTime         = 8193;
-            TriggerThreshold    = 100;
+            TriggerThreshold    = 10;
             SerialWaitMax       = 100;
+
             DevicePort.Write(new byte[] { 0x00 }, 0, 1);
             DevicePort.Write(new byte[] { 0x64 }, 0, 1);
             DevicePort.Write(new byte[] { 0x00 }, 0, 1);
@@ -431,7 +433,7 @@ namespace SdxScope
             TriggerPaddingCount = 0x0101;
 
             DevicePort.Write(new byte[] { 127, 50 }, 0, 2);
-            //DevicePort.Write(new byte[] { 139 }, 0, 1);
+            //DevicePort.Write(new byte[] { 139 }, 0, 1); 
         }
     }
 }
