@@ -21,10 +21,10 @@ namespace SdxScope
         }
         
 
-        public Communication(ref SerialPort devicePort)
+        public Communication(ref SerialPort devicePort, String comPort)
         {
             DevicePort = devicePort;
-            DevicePort.PortName = "COM11";
+            DevicePort.PortName = comPort;
             DevicePort.BaudRate = 1500000;
             DevicePort.Parity = Parity.None;
             DevicePort.DataBits = 8;

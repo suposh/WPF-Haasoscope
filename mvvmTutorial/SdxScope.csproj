@@ -7,11 +7,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <StartupObject>SdxScope.App</StartupObject>
-    <ApplicationIcon>static_image.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\static_image.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="static_image.ico" />
+    <None Remove="Assets\scope_bg.png" />
+    <None Remove="static_image.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\static_image.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +27,12 @@
     <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
     <PackageReference Include="ScottPlot.WPF" Version="5.0.47" />
     <PackageReference Include="System.IO.Ports" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\scope_bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
