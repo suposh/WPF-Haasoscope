@@ -183,16 +183,24 @@
                     <GroupBox Margin="0,5,0,5" Header="Trigger Menu">
                         <StackPanel Margin="0,0,0,0" Orientation="Vertical">
                             <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
-                                <TextBlock
-                                    Width="100"
-                                    Height="20"
-                                    Margin="5"
+
+                                <CheckBox
+                                    Margin="0,10,0,5"
+                                    HorizontalAlignment="Left"
+                                    Command="{Binding ChannelTrigger}"
                                     FontSize="14"
-                                    FontWeight="Medium"
-                                    Text="Trigger Position" />
+                                    FontWeight="Medium">
+                                    <CheckBox.Content>
+                                        <TextBlock
+                                            Margin="0,-2,0,0"
+                                            VerticalAlignment="Top"
+                                            Text="Trigger Position" />
+                                    </CheckBox.Content>
+                                </CheckBox>
                                 <Slider
                                     Width="120"
                                     Margin="20,8,0,0"
+                                    IsEnabled="{Binding}"
                                     Maximum="128"
                                     Minimum="1"
                                     Orientation="Horizontal"
@@ -215,11 +223,7 @@
                         FontSize="14"
                         FontWeight="Medium"
                         Text="Toggle Options" />
-                    <CheckBox
-                        Margin="15,2,0,2"
-                        HorizontalAlignment="Left"
-                        Command="{Binding ChannelTrigger}"
-                        Content="Trigger Enable" />
+
                     <CheckBox
                         Margin="15,2,0,2"
                         HorizontalAlignment="Left"
