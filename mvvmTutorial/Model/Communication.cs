@@ -21,10 +21,9 @@ namespace SdxScope
         }
         
 
-        public Communication(ref SerialPort devicePort, String comPort)
+        public Communication(ref SerialPort devicePort)
         {
             DevicePort = devicePort;
-            DevicePort.PortName = comPort;
             DevicePort.BaudRate = 1500000;
             DevicePort.Parity = Parity.None;
             DevicePort.DataBits = 8;
@@ -34,20 +33,25 @@ namespace SdxScope
             DevicePort.WriteTimeout = 1500;
         }
 
-        public void ConnectBoard()
+        public void ConnectBoard(String PortName)
         {
-            DevicePort.Open();
-            ConnectionStatus = true;
+            if (DevicePort.IsOpen is false)
+            {
+                DevicePort.PortName = PortName;
+                DevicePort.Open();
+            }
 
-            //readThread.Start();
+            ConnectionStatus = DevicePort.IsOpen;
+
         }
+
         public void DisconnectBoard()
         {
+            if (DevicePort.IsOpen)
+            {
+                DevicePort.Close();
+            }
             ConnectionStatus = false;
-            DevicePort.Close();
-        }
-
-        
+        }   
     }
-    
 }

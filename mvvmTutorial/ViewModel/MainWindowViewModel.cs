@@ -41,7 +41,30 @@ namespace SdxScope
                 OnPropertyChanged();
             }
         }
-        
+
+        private String[] _AvailableCOMDevices;
+        public String[] AvailableCOMDevices
+        {
+            get { return _AvailableCOMDevices;  }
+            set { OnPropertyChanged(); _AvailableCOMDevices = value; }
+        }
+
+        private String _SelectedCOMDevice;
+        public String SelectedCOMDevice
+        {
+            get { return _SelectedCOMDevice;  }
+            set { OnPropertyChanged(); _SelectedCOMDevice = value; }
+        }
+
+        static public String[] GetComPort
+        {
+            get{
+                String[] COMDevicesList = SerialPort.GetPortNames();
+                for (int i = 0; i < COMDevicesList.Length; i++)
+                    Trace.WriteLine($"{i}: {COMDevicesList[i]}");
+                return COMDevicesList;
+            }
+        }
 
         public LineSeries Channel_A, Channel_B, Channel_C, Channel_D;
 
@@ -61,20 +84,29 @@ namespace SdxScope
         public RelayCommand DataScaleIncrease { get; set; }
         public RelayCommand DataScaleDecrease { get; set; }
         public RelayCommand ChannelTrigger { get; set; }
+        public RelayCommand UpdateSelectedCOMPort { get; set; }
+        
 
         public MainWindowViewModel()
         {
             //Items = new ObservableCollection<Item>();
+            SelectedCOMDevice = "COM1";
+            _AvailableCOMDevices = GetComPort;
             DevicePort = new SerialPort();
-            Uart       = new Communication(ref DevicePort, "COM5" );
+            Uart       = new Communication(ref DevicePort);
             Model      = new PlotModel { };
+
+            // Setup Data polling timer
+            DataFetchTimer = new();
+            DataFetchTimer.Interval = TimeSpan.FromMilliseconds(10);
+            DataFetchTimer.Tick += Timer_Tick;
 
             // Load the image (any Stream or file path)
             var stream = Application.GetResourceStream(new Uri("pack://application:,,,/Assets/scope_bg.png"))?.Stream;
             using var ms = new MemoryStream();
             stream.CopyTo(ms);
-            //var background = new OxyImage(ms.ToArray());
 
+            // Set background image for plot
             var bgImageAnnotation = new ImageAnnotation
             {
                 ImageSource = new OxyImage(ms.ToArray()),
@@ -89,7 +121,6 @@ namespace SdxScope
                 VerticalAlignment = OxyPlot.VerticalAlignment.Bottom
             };
             Model.Annotations.Insert(0, bgImageAnnotation);
-
             Model.Axes.Add(new LinearAxis { Position = AxisPosition.Left});
             
             Channel_A = new LineSeries()
@@ -138,10 +169,6 @@ namespace SdxScope
             this.Model.Series.Add(Channel_D);
             this.OnPropertyChanged("Model");
 
-            DataFetchTimer = new();
-            DataFetchTimer.Interval = TimeSpan.FromMilliseconds(10);
-            DataFetchTimer.Tick += Timer_Tick;
-
             DisconnectBoardCommand =    new RelayCommand(
                 execute => { Uart.DisconnectBoard(); },
                 canExecute => ( Communication.ConnectionStatus is true )
@@ -149,15 +176,14 @@ namespace SdxScope
 
             ConnectBoardCommand =       new RelayCommand(
                 execute => {
-
-                    Uart.ConnectBoard();
+                    Uart.ConnectBoard(SelectedCOMDevice);
                     BoardHandle = new BoardConfiguration(0, ref DevicePort);
                     BoardHandle.Initializer();
                 },
                 canExecute => (Communication.ConnectionStatus is false)
             );
 
-            StartDataLoop = new RelayCommand(
+            StartDataLoop =             new RelayCommand(
                 execute => {
                     //this.Model = new PlotModel { Title = "Voltage Graph", Subtitle = "using OxyPlot" };
                     if (DataStreamStatus is false)
@@ -180,7 +206,7 @@ namespace SdxScope
                 canExecute => (Communication.ConnectionStatus is true)
             );
 
-            GetBoardFirmware = new RelayCommand(
+            GetBoardFirmware =          new RelayCommand(
                 execute => { BoardHandle.BoardFirmware.ToString(); }, 
                 canExecute => (Communication.ConnectionStatus is true)
             );
@@ -210,6 +236,10 @@ namespace SdxScope
                 canExecute => (Communication.ConnectionStatus is true)
             );
 
+            UpdateSelectedCOMPort =     new RelayCommand(
+                execute => { AvailableCOMDevices = GetComPort;  },
+                canExecute => (true)
+            );
         }
 
         public void Read()
@@ -272,8 +302,16 @@ namespace SdxScope
 
             if (DataStreamStatus)
             {
-                DevicePort.Write(new byte[] { 100 }, 0, 1);
-                DevicePort.Write(new byte[] { 10 }, 0, 1);
+                try
+                {
+                    DevicePort.Write(new byte[] { 100 }, 0, 1);
+                    DevicePort.Write(new byte[] { 10 }, 0, 1);
+                }
+                catch (Exception er)
+                {
+                    Trace.WriteLine($"Read Failed: {er.Message}");
+                    return;
+                }
 
                 while (CurrentReadSize < 2048)
                 {

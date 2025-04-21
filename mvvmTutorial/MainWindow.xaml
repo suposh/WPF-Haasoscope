@@ -96,6 +96,35 @@
                             FontWeight="Medium"
                             Text="{Binding BoardHandle.BoardFirmware, Mode=OneWay}" />
                     </StackPanel>
+                    <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Bottom"
+                            FontSize="14"
+                            FontWeight="Medium">
+                            Select Device :
+                        </TextBlock>
+                        <ComboBox
+                            Width="80"
+                            MinWidth="70"
+                            Margin="5,0,5,0"
+                            VerticalAlignment="Center"
+                            FontSize="10"
+                            FontWeight="Medium"
+                            ItemsSource="{Binding AvailableCOMDevices, Mode=OneWay}"
+                            SelectedValue="{Binding SelectedCOMDevice, Mode=OneWayToSource}" />
+                        <TextBlock
+                            Width="50"
+                            VerticalAlignment="Bottom"
+                            Background="Beige"
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Text="{Binding SelectedCOMDevice, Mode=OneWay}" />
+                        <Button
+                            Width="50"
+                            Margin="5,0,5,0"
+                            Command="{Binding UpdateSelectedCOMPort}"
+                            Content="Refresh" />
+                    </StackPanel>
                     <StackPanel
                         Height="30"
                         Margin="0,10,0,5"
@@ -201,8 +230,8 @@
                                     Width="120"
                                     Margin="20,8,0,0"
                                     IsEnabled="{Binding}"
-                                    Maximum="128"
-                                    Minimum="1"
+                                    Maximum="255"
+                                    Minimum="0"
                                     Orientation="Horizontal"
                                     Value="{Binding BoardHandle.TriggerThreshold, Mode=TwoWay}" />
                                 <TextBlock
