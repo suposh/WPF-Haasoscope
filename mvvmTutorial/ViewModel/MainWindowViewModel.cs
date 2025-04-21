@@ -49,8 +49,8 @@ namespace SdxScope
             set { OnPropertyChanged(); _AvailableCOMDevices = value; }
         }
 
-        private String _SelectedCOMDevice;
-        public String SelectedCOMDevice
+        private int _SelectedCOMDevice;
+        public int SelectedCOMDevice
         {
             get { return _SelectedCOMDevice;  }
             set { OnPropertyChanged(); _SelectedCOMDevice = value; }
@@ -90,8 +90,8 @@ namespace SdxScope
         public MainWindowViewModel()
         {
             //Items = new ObservableCollection<Item>();
-            SelectedCOMDevice = "COM1";
-            _AvailableCOMDevices = GetComPort;
+            SelectedCOMDevice = 0;
+            AvailableCOMDevices = GetComPort.OrderBy(o => o).ToArray();
             DevicePort = new SerialPort();
             Uart       = new Communication(ref DevicePort);
             Model      = new PlotModel { };
@@ -176,9 +176,12 @@ namespace SdxScope
 
             ConnectBoardCommand =       new RelayCommand(
                 execute => {
-                    Uart.ConnectBoard(SelectedCOMDevice);
-                    BoardHandle = new BoardConfiguration(0, ref DevicePort);
-                    BoardHandle.Initializer();
+                    Uart.ConnectBoard(AvailableCOMDevices[SelectedCOMDevice]);
+                    if (Communication.ConnectionStatus)
+                    {
+                        BoardHandle = new BoardConfiguration(0, ref DevicePort);
+                        BoardHandle.Initializer();
+                    }
                 },
                 canExecute => (Communication.ConnectionStatus is false)
             );
@@ -249,8 +252,16 @@ namespace SdxScope
             int CurrentReadSize = 0;
             while (DataStreamStatus)
             {
-                DevicePort.Write(new byte[] { 100 }, 0, 1);
-                DevicePort.Write(new byte[] {  10 }, 0, 1);
+                try
+                {
+                    DevicePort.Write(new byte[] { 100 }, 0, 1);
+                    DevicePort.Write(new byte[] {  10 }, 0, 1);
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine($"Write Failed" + $"{e.Message}");
+                }
+
                 while (CurrentReadSize < 2048)
                 {
                     try

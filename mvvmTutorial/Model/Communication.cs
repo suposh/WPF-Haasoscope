@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Composition;
 
 namespace SdxScope
 {
@@ -19,7 +15,6 @@ namespace SdxScope
             get { return connectionStatus;  }
             set { connectionStatus = value; }
         }
-        
 
         public Communication(ref SerialPort devicePort)
         {
@@ -35,22 +30,37 @@ namespace SdxScope
 
         public void ConnectBoard(String PortName)
         {
-            if (DevicePort.IsOpen is false)
+            try
             {
-                DevicePort.PortName = PortName;
-                DevicePort.Open();
+                if (DevicePort.IsOpen is false)
+                {
+                    DevicePort.PortName = PortName;
+                    DevicePort.Open();
+                }
             }
-
+            catch (Exception e)
+            {
+                Trace.WriteLine($"{e.Message}");
+            }
+            
             ConnectionStatus = DevicePort.IsOpen;
 
         }
 
         public void DisconnectBoard()
         {
-            if (DevicePort.IsOpen)
+            try
             {
-                DevicePort.Close();
+                if (DevicePort.IsOpen)
+                {
+                    DevicePort.Close();
+                }
             }
+            catch (Exception e)
+            {
+                Trace.WriteLine($"{e.Message}");
+            }
+            
             ConnectionStatus = false;
         }   
     }
