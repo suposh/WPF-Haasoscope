@@ -138,122 +138,136 @@
                 Margin="10"
                 Background="Transparent"
                 Model="{Binding Model}" />
-            <StackPanel Grid.Column="1" Orientation="Vertical">
-                <StackPanel Orientation="Vertical">
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="190" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="80" />
+                </Grid.RowDefinitions>
 
-                    <StackPanel
-                        Height="30"
-                        Margin="0,10,0,5"
+                <StackPanel
+                    Grid.Row="0"
+                    Height="30"
+                    Margin="0,5,0,5"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Width="50"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Right"
+                        FontWeight="Medium"
+                        Text="Setup" />
+                    <Button
+                        Width="80"
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Right"
+                        Command="{Binding ConnectBoardCommand}"
+                        Content="Connect"
+                        Style="{StaticResource AccentButtonStyle}" />
+                    <Button
+                        Width="100"
+                        Margin="5,0,5,0"
                         HorizontalAlignment="Center"
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Width="50"
-                            Margin="5,0,0,0"
-                            HorizontalAlignment="Right"
-                            FontWeight="Medium"
-                            Text="Setup" />
-                        <Button
-                            Width="80"
-                            Margin="0,0,5,0"
-                            HorizontalAlignment="Right"
-                            Command="{Binding ConnectBoardCommand}"
-                            Content="Connect"
-                            Style="{StaticResource AccentButtonStyle}" />
-                        <Button
-                            Width="100"
-                            Margin="5,0,5,0"
-                            HorizontalAlignment="Center"
-                            Command="{Binding DisconnectBoardCommand}"
-                            Content="Disconnect"
-                            Style="{StaticResource AccentButtonStyle}" />
-                        <Button
-                            Width="90"
-                            Margin="5,0,5,0"
-                            HorizontalAlignment="Left"
-                            Command="{Binding StartDataLoop}"
-                            Content="Start Loop"
-                            Style="{StaticResource AccentButtonStyle}" />
-                    </StackPanel>
-                    <Separator />
-                    <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
-                        <TextBlock
-                            Width="100"
-                            Margin="5"
-                            FontSize="14"
-                            FontWeight="Medium"
-                            Text="Time Base" />
-                        <Button
-                            Width="80"
-                            Margin="20,0,0,0"
-                            HorizontalAlignment="Right"
-                            Command="{Binding DownsampleIncrease}"
-                            Content="Increase"
-                            Style="{StaticResource AccentButtonStyle}" />
-                        <Button
-                            Width="80"
-                            Margin="20,0,20,0"
-                            HorizontalAlignment="Right"
-                            Command="{Binding DownsampleDecrease}"
-                            Content="Decrease"
-                            Style="{StaticResource AccentButtonStyle}" />
-                    </StackPanel>
-                    <Separator />
-                    <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
-                        <TextBlock
-                            Width="100"
-                            Height="20"
-                            Margin="5"
-                            FontSize="14"
-                            FontWeight="Medium"
-                            Text="Voltage Controls" />
-                        <Button
-                            Width="80"
-                            Margin="20,0,0,0"
-                            HorizontalAlignment="Right"
-                            Command="{Binding DataScaleIncrease}"
-                            Content="Increase"
-                            Style="{StaticResource AccentButtonStyle}" />
-                        <Button
-                            Width="80"
-                            Margin="20,0,0,0"
-                            HorizontalAlignment="Right"
-                            Command="{Binding DataScaleDecrease}"
-                            Content="Decrease"
-                            Style="{StaticResource AccentButtonStyle}" />
-                    </StackPanel>
-                    <Separator />
-                    <GroupBox Margin="0,5,0,5" Header="Trigger Menu">
-                        <StackPanel Margin="0,0,0,0" Orientation="Vertical">
-                            <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                        Command="{Binding DisconnectBoardCommand}"
+                        Content="Disconnect"
+                        Style="{StaticResource AccentButtonStyle}" />
+                    <Button
+                        Width="90"
+                        Margin="5,0,5,0"
+                        HorizontalAlignment="Left"
+                        Command="{Binding StartDataLoop}"
+                        Content="Start Loop"
+                        Style="{StaticResource AccentButtonStyle}" />
+                </StackPanel>
+                <StackPanel
+                    Grid.Row="1"
+                    Margin="0,5,0,5"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Width="100"
+                        Margin="5"
+                        FontSize="14"
+                        FontWeight="Medium"
+                        Text="Time Base" />
+                    <Button
+                        Width="80"
+                        Margin="20,0,0,0"
+                        HorizontalAlignment="Right"
+                        Command="{Binding DownsampleIncrease}"
+                        Content="Increase"
+                        Style="{StaticResource AccentButtonStyle}" />
+                    <Button
+                        Width="80"
+                        Margin="20,0,20,0"
+                        HorizontalAlignment="Right"
+                        Command="{Binding DownsampleDecrease}"
+                        Content="Decrease"
+                        Style="{StaticResource AccentButtonStyle}" />
+                </StackPanel>
+                <StackPanel
+                    Grid.Row="2"
+                    Margin="0,5,0,5"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Width="100"
+                        Height="20"
+                        Margin="5"
+                        FontSize="14"
+                        FontWeight="Medium"
+                        Text="Voltage Controls" />
+                    <Button
+                        Width="80"
+                        Margin="20,0,0,0"
+                        HorizontalAlignment="Right"
+                        Command="{Binding DataScaleIncrease}"
+                        Content="Increase"
+                        Style="{StaticResource AccentButtonStyle}" />
+                    <Button
+                        Width="80"
+                        Margin="20,0,0,0"
+                        HorizontalAlignment="Right"
+                        Command="{Binding DataScaleDecrease}"
+                        Content="Decrease"
+                        Style="{StaticResource AccentButtonStyle}" />
+                </StackPanel>
+                <GroupBox
+                    Grid.Row="3"
+                    Margin="0,5,0,5"
+                    Header="Trigger Menu">
+                    <StackPanel Margin="0,0,0,0" Orientation="Vertical">
+                        <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
 
-                                <CheckBox
-                                    Width="140"
-                                    Height="30"
-                                    Margin="10,0,10,0"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding ChannelTrigger}"
-                                    Content="Trigger Value"
-                                    Style="{StaticResource ToggleSwitchStyle}" />
+                            <CheckBox
+                                Width="140"
+                                Height="30"
+                                Margin="10,0,10,0"
+                                VerticalAlignment="Center"
+                                Command="{Binding ChannelTrigger}"
+                                Content="Trigger Value"
+                                Style="{StaticResource ToggleSwitchStyle}" />
 
-                                <Slider
-                                    Width="120"
-                                    Height="30"
-                                    Margin="0,0,10,0"
-                                    VerticalAlignment="Center"
-                                    IsEnabled="{Binding}"
-                                    Maximum="255"
-                                    Minimum="0"
-                                    Orientation="Horizontal"
-                                    Value="{Binding BoardHandle.TriggerThreshold, Mode=TwoWay}" />
-                                <TextBlock
-                                    Width="50"
-                                    Margin="0,0,0,0"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding BoardHandle.TriggerThreshold, Mode=OneWay}" />
-                            </StackPanel>
+                            <Slider
+                                Width="120"
+                                Height="30"
+                                Margin="0,0,10,0"
+                                VerticalAlignment="Center"
+                                IsEnabled="{Binding}"
+                                Maximum="255"
+                                Minimum="0"
+                                Orientation="Horizontal"
+                                Value="{Binding BoardHandle.TriggerThreshold, Mode=TwoWay}" />
+                            <TextBlock
+                                Width="50"
+                                Margin="0,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="{Binding BoardHandle.TriggerThreshold, Mode=OneWay}" />
                         </StackPanel>
-                    </GroupBox>
-                    <Separator />
+                    </StackPanel>
+                </GroupBox>
+                <StackPanel Grid.Row="4">
                     <TextBlock
                         Height="20"
                         Margin="5"
@@ -300,56 +314,58 @@
                         Content="Coupling DC/AC"
                         Style="{StaticResource ToggleSwitchStyle}" />
                 </StackPanel>
-                <Separator Margin="0,30,0,0" />
-                <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
-                    <TextBlock
-                        Height="20"
-                        Margin="0,0,0,5"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="16"
-                        FontWeight="Medium">
-                        Firmware Version
-                    </TextBlock>
-                    <TextBlock
-                        Name="VersionLabel"
-                        Height="20"
-                        Margin="5,0,5,5"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="16"
-                        FontWeight="Medium"
-                        Text="{Binding BoardHandle.BoardFirmware, Mode=OneWay}" />
+                <StackPanel Grid.Row="5" />
+                <StackPanel Grid.Row="6" VerticalAlignment="Bottom">
+                    <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
+                        <TextBlock
+                            Height="20"
+                            Margin="0,0,0,5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="Medium">
+                            Firmware Version
+                        </TextBlock>
+                        <TextBlock
+                            Name="VersionLabel"
+                            Height="20"
+                            Margin="5,0,5,5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="Medium"
+                            Text="{Binding BoardHandle.BoardFirmware, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
+                        <TextBlock
+                            Height="20"
+                            Margin="0,0,0,5"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="Medium"
+                            Text="Device " />
+                        <ComboBox
+                            Width="120"
+                            Height="35"
+                            MinWidth="70"
+                            Margin="0,0,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Medium"
+                            ItemsSource="{Binding AvailableCOMDevices, Mode=OneWay}"
+                            SelectedIndex="{Binding SelectedCOMDevice, Mode=TwoWay}" />
+                        <Button
+                            Width="70"
+                            Height="30"
+                            Margin="0,0,0,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding UpdateSelectedCOMPort}"
+                            Content="Refresh"
+                            FontSize="14"
+                            Style="{StaticResource AccentButtonStyle}" />
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
-                    <TextBlock
-                        Height="20"
-                        Margin="0,0,0,5"
-                        VerticalAlignment="Center"
-                        FontSize="16"
-                        FontWeight="Medium"
-                        Text="Device " />
-                    <ComboBox
-                        Width="120"
-                        Height="35"
-                        MinWidth="70"
-                        Margin="0,0,0,0"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        FontWeight="Medium"
-                        ItemsSource="{Binding AvailableCOMDevices, Mode=OneWay}"
-                        SelectedIndex="{Binding SelectedCOMDevice, Mode=TwoWay}" />
-                    <Button
-                        Width="70"
-                        Height="30"
-                        Margin="0,0,0,0"
-                        VerticalAlignment="Center"
-                        Command="{Binding UpdateSelectedCOMPort}"
-                        Content="Refresh"
-                        FontSize="14"
-                        Style="{StaticResource AccentButtonStyle}" />
-                </StackPanel>
-            </StackPanel>
+            </Grid>
         </Grid>
 
         <TextBlock
