@@ -156,15 +156,15 @@
                     <RowDefinition Height="50" />
                     <RowDefinition Height="50" />
                     <RowDefinition Height="80" />
-                    <RowDefinition Height="190" />
+                    <RowDefinition Height="180" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="80" />
+                    <RowDefinition Height="110" />
                 </Grid.RowDefinitions>
 
                 <StackPanel
                     Grid.Row="0"
                     Height="30"
-                    Margin="0,5,0,5"
+                    Margin="0,10,0,5"
                     Orientation="Horizontal">
                     <TextBlock
                         Width="50"
@@ -172,26 +172,20 @@
                         HorizontalAlignment="Right"
                         FontWeight="Medium"
                         Text="Setup" />
-                    <Button
-                        Width="80"
+                    <ToggleButton
+                        Width="150"
                         Margin="0,0,5,0"
                         HorizontalAlignment="Right"
                         Command="{Binding ConnectBoardCommand}"
-                        Content="Connect"
-                        Style="{StaticResource AccentButtonStyle}" />
+                        CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                        Content="{Binding ConnectionButton, Mode=OneWay}"
+                        IsChecked="{Binding Communication.ConnectionStatus, Mode=OneWay}" />
                     <Button
-                        Width="100"
-                        Margin="5,0,5,0"
-                        HorizontalAlignment="Center"
-                        Command="{Binding DisconnectBoardCommand}"
-                        Content="Disconnect"
-                        Style="{StaticResource AccentButtonStyle}" />
-                    <Button
-                        Width="90"
-                        Margin="5,0,5,0"
+                        Width="80"
+                        Margin="15,0,5,0"
                         HorizontalAlignment="Left"
                         Command="{Binding StartDataLoop}"
-                        Content="Start Loop"
+                        Content="Get Data"
                         Style="{StaticResource AccentButtonStyle}" />
                 </StackPanel>
                 <StackPanel
@@ -201,6 +195,7 @@
                     <TextBlock
                         Width="100"
                         Margin="5"
+                        VerticalAlignment="Center"
                         FontSize="14"
                         FontWeight="Medium"
                         Text="Time Base" />
@@ -253,18 +248,18 @@
                         <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
 
                             <CheckBox
-                                Width="140"
+                                Width="150"
                                 Height="30"
-                                Margin="10,0,10,0"
+                                Margin="10,10,10,0"
                                 VerticalAlignment="Center"
                                 Command="{Binding ChannelTrigger}"
                                 Content="Trigger Value"
                                 Style="{StaticResource ToggleSwitchStyle}" />
 
                             <Slider
-                                Width="120"
+                                Width="135"
                                 Height="30"
-                                Margin="0,0,10,0"
+                                Margin="0,10,10,0"
                                 VerticalAlignment="Center"
                                 IsEnabled="{Binding}"
                                 Maximum="255"
@@ -273,8 +268,10 @@
                                 Value="{Binding BoardHandle.TriggerThreshold, Mode=TwoWay}" />
                             <TextBlock
                                 Width="50"
-                                Margin="0,0,0,0"
+                                Height="30"
+                                Margin="10,10,0,0"
                                 VerticalAlignment="Center"
+                                FontSize="18"
                                 Text="{Binding BoardHandle.TriggerThreshold, Mode=OneWay}" />
                         </StackPanel>
                     </StackPanel>
@@ -351,28 +348,33 @@
                             FontWeight="Medium"
                             Text="{Binding BoardHandle.BoardFirmware, Mode=OneWay}" />
                     </StackPanel>
-                    <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
+                    <StackPanel
+                        Margin="0,0,0,15"
+                        VerticalAlignment="Bottom"
+                        Orientation="Horizontal">
                         <TextBlock
-                            Height="20"
-                            Margin="0,0,0,5"
+                            Height="30"
+                            Margin="0,5,0,0"
                             VerticalAlignment="Center"
                             FontSize="16"
                             FontWeight="Medium"
                             Text="Device  " />
                         <ComboBox
                             Width="120"
-                            Height="20"
+                            Height="30"
                             MinWidth="70"
                             Margin="0,0,0,0"
+                            Padding="5,1"
                             VerticalAlignment="Center"
-                            FontSize="8"
+                            VerticalContentAlignment="Center"
+                            FontSize="14"
                             FontWeight="Medium"
                             ItemsSource="{Binding AvailableCOMDevices, Mode=OneWay}"
                             SelectedIndex="{Binding SelectedCOMDevice, Mode=TwoWay}" />
                         <Button
                             Width="70"
-                            Height="20"
-                            Margin="0,0,0,0"
+                            Height="30"
+                            Margin="20,0,0,0"
                             VerticalAlignment="Center"
                             Command="{Binding UpdateSelectedCOMPort}"
                             Content="Refresh"

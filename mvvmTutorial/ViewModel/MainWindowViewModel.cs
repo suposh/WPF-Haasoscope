@@ -20,6 +20,17 @@ namespace SdxScope
         public SerialPort DevicePort;
         public Communication Uart;
 
+        private String _ConnectionButton;
+        public String ConnectionButton
+        {
+            get => _ConnectionButton;
+            set
+            {
+                _ConnectionButton = value;
+                OnPropertyChanged(); // ← this uses CallerMemberName, so no need to pass the string
+            }
+        }
+
         private BoardConfiguration? _boardHandle;
         public BoardConfiguration? BoardHandle
         {
@@ -76,7 +87,7 @@ namespace SdxScope
         public RelayCommand AddCommand { get; set; }
         public RelayCommand DeleteCommand { get; set; }
         public RelayCommand ConnectBoardCommand { get; set; }
-        public RelayCommand DisconnectBoardCommand { get; set; }
+        //public RelayCommand DisconnectBoardCommand { get; set; }
         public RelayCommand StartDataLoop { get; set; }
         public RelayCommand GetBoardFirmware { get; set; }
         public RelayCommand DownsampleIncrease { get; set; }
@@ -95,6 +106,7 @@ namespace SdxScope
             DevicePort = new SerialPort();
             Uart       = new Communication(ref DevicePort);
             Model      = new PlotModel { };
+            ConnectionButton = new String("Connect");
 
             // Setup Data polling timer
             DataFetchTimer = new();
@@ -169,21 +181,31 @@ namespace SdxScope
             this.Model.Series.Add(Channel_D);
             this.OnPropertyChanged("Model");
 
-            DisconnectBoardCommand =    new RelayCommand(
-                execute => { Uart.DisconnectBoard(); },
-                canExecute => ( Communication.ConnectionStatus is true )
-            );
-
             ConnectBoardCommand =       new RelayCommand(
-                execute => {
-                    Uart.ConnectBoard(AvailableCOMDevices[SelectedCOMDevice]);
-                    if (Communication.ConnectionStatus)
+                param => {
+                    if (param is bool isChecked)
                     {
-                        BoardHandle = new BoardConfiguration(0, ref DevicePort);
-                        BoardHandle.Initializer();
+                        if (isChecked)
+                        {
+                            Uart.ConnectBoard(AvailableCOMDevices[SelectedCOMDevice]);
+                            if (Communication.ConnectionStatus)
+                            {
+                                ConnectionButton = "Disconnect";
+                                BoardHandle = new BoardConfiguration(0, ref DevicePort);
+                                BoardHandle.Initializer();
+                            }
+                            else
+                            {
+                                ConnectionButton = "Connect";
+                                Debug.WriteLine("Failed to Connect.");
+                            }
+                        }
+                        else
+                        { Uart.DisconnectBoard(); ConnectionButton = "Connect"; }
                     }
+                    
                 },
-                canExecute => (Communication.ConnectionStatus is false)
+                canExecute => (true)
             );
 
             StartDataLoop =             new RelayCommand(
