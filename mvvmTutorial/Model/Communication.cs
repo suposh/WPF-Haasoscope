@@ -5,15 +5,15 @@ using System.IO.Ports;
 
 namespace SdxScope
 {
-    internal class Communication
+    internal class Communication : ViewModelBase
     {
         static public SerialPort DevicePort;
 
-        static private bool connectionStatus = false;
-        static public bool ConnectionStatus
+        private bool connectionStatus = false;
+        public bool ConnectionStatus
         {
             get { return connectionStatus;  }
-            set { connectionStatus = value; }
+            set { connectionStatus = value; OnPropertyChanged(); }
         }
 
         public Communication(ref SerialPort devicePort)

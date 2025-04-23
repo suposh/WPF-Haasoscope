@@ -188,7 +188,7 @@ namespace SdxScope
                         if (isChecked)
                         {
                             Uart.ConnectBoard(AvailableCOMDevices[SelectedCOMDevice]);
-                            if (Communication.ConnectionStatus)
+                            if (Uart.ConnectionStatus)
                             {
                                 ConnectionButton = "Disconnect";
                                 BoardHandle = new BoardConfiguration(0, ref DevicePort);
@@ -197,6 +197,7 @@ namespace SdxScope
                             else
                             {
                                 ConnectionButton = "Connect";
+                                Uart.ConnectionStatus = false;
                                 Debug.WriteLine("Failed to Connect.");
                             }
                         }
@@ -228,37 +229,37 @@ namespace SdxScope
                     }
                     }
                 },
-                canExecute => (Communication.ConnectionStatus is true)
+                canExecute => (Uart.ConnectionStatus is true)
             );
 
             GetBoardFirmware =          new RelayCommand(
                 execute => { BoardHandle.BoardFirmware.ToString(); }, 
-                canExecute => (Communication.ConnectionStatus is true)
+                canExecute => (Uart.ConnectionStatus is true)
             );
 
             DownsampleIncrease =        new RelayCommand(
                 execute => { BoardHandle.Downsample += 1; },
-                canExecute => (Communication.ConnectionStatus is true)
+                canExecute => (Uart.ConnectionStatus is true)
             );
 
             DownsampleDecrease =        new RelayCommand(
                 execute => { BoardHandle.Downsample -= 1; },
-                canExecute => (Communication.ConnectionStatus is true)
+                canExecute => (Uart.ConnectionStatus is true)
             );
             
             DataScaleIncrease =         new RelayCommand(
                 execute => { },
-                canExecute => (Communication.ConnectionStatus is true)
+                canExecute => (Uart.ConnectionStatus is true)
             );
 
             DataScaleDecrease =         new RelayCommand(
                 execute => { },
-                canExecute => (Communication.ConnectionStatus is true)
+                canExecute => (Uart.ConnectionStatus is true)
             );
 
             ChannelTrigger =            new RelayCommand(
                 execute => { BoardHandle.TriggerEnable = 0; },
-                canExecute => (Communication.ConnectionStatus is true)
+                canExecute => (Uart.ConnectionStatus is true)
             );
 
             UpdateSelectedCOMPort =     new RelayCommand(

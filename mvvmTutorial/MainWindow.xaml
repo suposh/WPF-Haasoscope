@@ -179,7 +179,7 @@
                         Command="{Binding ConnectBoardCommand}"
                         CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
                         Content="{Binding ConnectionButton, Mode=OneWay}"
-                        IsChecked="{Binding Communication.ConnectionStatus, Mode=OneWay}" />
+                        IsChecked="{Binding Uart.ConnectionStatus, Mode=OneWay}" />
                     <Button
                         Width="80"
                         Margin="15,0,5,0"
