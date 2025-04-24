@@ -33,18 +33,20 @@ A modern, cross-platform WPF application (styled with .NET 9.0 Fluent UI) for in
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/sdx-scope.git
-   cd sdx-scope
+   git clone https://github.com/suposh/WPF-Haasoscope
+   cd SdxScope
 	```
-2. Build the project using Visual Studio 2022/2025 or:
 
+2. Build the project using Visual Studio 2022/2025 or
 	```
 	dotnet build
 	```
+
 3. Run the app:
 	```
 	dotnet run --project SdxScope
 	```
+
 ## 🔧 Setup
 
 1. Select the COM port from the dropdown (auto-detect supported)
