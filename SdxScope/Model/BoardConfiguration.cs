@@ -1,19 +1,20 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using System.IO.Ports;
+using System.Windows.Data;
 
 namespace SdxScope
 {
-    internal class BoardConfiguration: ViewModelBase
+    internal class BoardConfiguration: ViewModelBase 
     {
         private SerialPort DevicePort;
 
-        private UInt64 boardUniqueId;
-        
+        public String boardUniqueId;
+
         /// <value>
         ///  Unique serial number of board
         /// </value>
-        public UInt64 BoardUniqueId
+        public String BoardUniqueId
         {
             get
             {
@@ -34,9 +35,9 @@ namespace SdxScope
                 {
                     TraceMessage($"Read Failed" + $"{e.Message}");
                 }
-                boardUniqueId = BitConverter.ToUInt64(result, 0);
-                TraceMessage($"{boardUniqueId:X}");
-                return boardUniqueId;
+                boardUniqueId = $"{BitConverter.ToUInt64(result, 0):X}";
+                TraceMessage($"{boardUniqueId}");
+                return $"{boardUniqueId}";
             }
         }
 

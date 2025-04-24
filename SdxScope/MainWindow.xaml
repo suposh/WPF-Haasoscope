@@ -115,17 +115,39 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="MenuItemStyle" TargetType="MenuItem">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Padding" Value="5,2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border x:Name="Border" Background="{TemplateBinding Background}">
+                            <Grid>
+                                <ContentPresenter
+                                    Margin="4"
+                                    VerticalAlignment="Center"
+                                    ContentSource="Header" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="DodgerBlue" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
-        <Menu
-            Grid.Row="0"
-            Background="LightGray"
-            FontSize="16">
+        <Menu Grid.Row="0" FontSize="16">
             <MenuItem
                 Margin="0,0,0,0"
                 Padding="0,-10,0,-10"
@@ -315,12 +337,12 @@
                         Content="Gain"
                         Style="{StaticResource ToggleSwitchStyle}" />
                     <CheckBox
-                        Width="160"
+                        Width="180"
                         Height="30"
                         Margin="15,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalContentAlignment="Center"
-                        Content="DAC Output"
+                        Content="2X OverSampling"
                         Style="{StaticResource ToggleSwitchStyle}" />
                     <TextBlock
                         Margin="5"
@@ -398,12 +420,44 @@
                 </StackPanel>
             </Grid>
         </Grid>
-
-        <TextBlock
+        <Grid
             Grid.Row="2"
             Grid.RowSpan="2"
-            Grid.Column="1"
-            Margin="5,5,5,5"
-            Text="Status" />
+            Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                Grid.Column="0"
+                Background="LightBlue"
+                Orientation="Horizontal">
+                <TextBlock
+                    Margin="10,0,0,0"
+                    FontSize="16"
+                    FontWeight="Medium"
+                    Text="Status" />
+            </StackPanel>
+            <StackPanel
+                Grid.Column="1"
+                Background="CadetBlue"
+                Orientation="Horizontal">
+                <TextBlock
+                    Margin="5,0,0,0"
+                    FontSize="16"
+                    Text="Streaming data FPS: 5.04" />
+            </StackPanel>
+            <StackPanel
+                Grid.Column="2"
+                Background="LightBlue"
+                Orientation="Horizontal">
+                <TextBlock
+                    Margin="5,0,0,0"
+                    FontSize="16"
+                    Text="{Binding BoardHandle.BoardUniqueId, Mode=OneWay}" />
+            </StackPanel>
+
+        </Grid>
     </Grid>
 </Window>
