@@ -1,0 +1,30 @@
+﻿<UserControl
+    x:Class="SdxScope.Controls.OscilloscopeGrid"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:SdxScope.Controls"
+    Loaded="UserControl_Loaded"
+    SizeChanged="UserControl_SizeChanged">
+    <Grid x:Name="RootGrid" Background="Black">
+        <Canvas x:Name="HorizontalLinesCanvas" />
+        <Canvas x:Name="VerticalLinesCanvas" />
+
+        <Line
+            x:Name="VerticalCenterLine"
+            Stroke="Lime"
+            StrokeThickness="1"
+            X1="0"
+            X2="0"
+            Y1="0"
+            Y2="0" />
+
+        <Line
+            x:Name="HorizontalCenterLine"
+            Stroke="Lime"
+            StrokeThickness="1"
+            X1="0"
+            X2="0"
+            Y1="0"
+            Y2="0" />
+    </Grid>
+</UserControl>
