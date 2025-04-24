@@ -18,7 +18,17 @@ namespace SdxScope
         //Byte[] msg = { 0, 20, 30, 142 };
 
         public SerialPort DevicePort;
-        public Communication Uart;
+
+        private Communication _Uart;
+        public Communication Uart
+        {
+            get => _Uart;
+            set
+            {
+                _Uart = value;
+                OnPropertyChanged(); // ← this uses CallerMemberName, so no need to pass the string
+            }
+        }
 
         private String _ConnectionButton;
         public String ConnectionButton

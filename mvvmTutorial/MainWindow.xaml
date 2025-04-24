@@ -7,8 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
     Title="SDX Scope"
-    Width="800"
-    Height="550"
+    Width="930"
+    Height="650"
     mc:Ignorable="d">
     <Window.Resources>
         <Style x:Key="RoundedButtonStyle" TargetType="{x:Type Button}">
@@ -122,23 +122,37 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0" Background="LightBlue">
+        <Menu
+            Grid.Row="0"
+            Background="LightGray"
+            FontSize="16">
             <MenuItem
-                Height="25"
-                Margin="2"
-                Header="File" />
+                Margin="0,0,0,0"
+                Padding="0,-10,0,-10"
+                Header="File">
+                <MenuItem Padding="-5,-5,-5,-5" Header="Open" />
+            </MenuItem>
             <MenuItem
-                Height="25"
-                Margin="2"
-                Header="Board Configuration" />
+                Margin="0,0,0,0"
+                Padding="-15,-10,-15,-10"
+                Header="Device Configuration">
+                <MenuItem Padding="-5,-5,-5,-5" Header="Edit Config" />
+                <MenuItem Padding="-5,-5,-5,-5" Header="Edit Config" />
+            </MenuItem>
             <MenuItem
-                Height="25"
-                Margin="2"
-                Header="Window" />
+                Margin="0,0,0,0"
+                Padding="0,-10,0,-10"
+                Header="Window">
+                <MenuItem Padding="-5,-5,-5,-5" Header="Grid Settings" />
+                <MenuItem Padding="-5,-5,-5,-5" Header="Themes" />
+            </MenuItem>
             <MenuItem
-                Height="25"
-                Margin="2"
-                Header="About" />
+                Margin="0,0,0,0"
+                Padding="0,-10,0,-10"
+                Header="About">
+                <MenuItem Padding="-5,-5,-5,-5" Header="This Project?" />
+                <MenuItem Padding="-5,-5,-5,-5" Header="Version Info" />
+            </MenuItem>
         </Menu>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -261,15 +275,15 @@
                                 Height="30"
                                 Margin="0,10,10,0"
                                 VerticalAlignment="Center"
-                                IsEnabled="{Binding}"
+                                IsEnabled="{Binding Uart.ConnectionStatus}"
                                 Maximum="255"
                                 Minimum="0"
                                 Orientation="Horizontal"
                                 Value="{Binding BoardHandle.TriggerThreshold, Mode=TwoWay}" />
                             <TextBlock
                                 Width="50"
-                                Height="30"
-                                Margin="10,10,0,0"
+                                Height="20"
+                                Margin="0,5,0,0"
                                 VerticalAlignment="Center"
                                 FontSize="18"
                                 Text="{Binding BoardHandle.TriggerThreshold, Mode=OneWay}" />
