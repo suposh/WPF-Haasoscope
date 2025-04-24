@@ -440,7 +440,8 @@
                 Background="LightBlue"
                 Orientation="Horizontal">
                 <TextBlock
-                    Margin="10,0,0,0"
+                    Margin="10,0,0,3"
+                    VerticalAlignment="Center"
                     FontSize="16"
                     FontWeight="Medium"
                     Text="Status" />
@@ -450,7 +451,8 @@
                 Background="CadetBlue"
                 Orientation="Horizontal">
                 <TextBlock
-                    Margin="5,0,0,0"
+                    Margin="5,0,0,3"
+                    VerticalAlignment="Center"
                     FontSize="16"
                     Text="Streaming data FPS: 5.04" />
             </StackPanel>
@@ -459,7 +461,8 @@
                 Background="LightBlue"
                 Orientation="Horizontal">
                 <TextBlock
-                    Margin="5,0,0,0"
+                    Margin="5,0,0,3"
+                    VerticalAlignment="Center"
                     FontSize="16"
                     Text="{Binding BoardHandle.BoardUniqueId, Mode=OneWay}" />
             </StackPanel>
