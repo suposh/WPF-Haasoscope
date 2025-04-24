@@ -47,22 +47,20 @@ A modern, cross-platform WPF application (styled with .NET 9.0 Fluent UI) for in
 	```
 ## 🔧 Setup
 
-    Select the COM port from the dropdown (auto-detect supported)
-
-    Click Connect to establish communication
-
-    Use the control panel to adjust settings and receive live waveforms
+1. Select the COM port from the dropdown (auto-detect supported)
+2. Click Connect to establish communication
+3. Use the control panel to adjust settings and receive live waveforms
 
 ## 📷 UI Preview
 
-    UI includes modern toggle buttons, sliders, and control groups with a dark scope background.
+UI includes modern toggle buttons, sliders, and control groups with a dark scope background.
 
 ## 📡 Haasoscope
 
-	Haasoscope is an open-source, USB oscilloscope with FPGA-based data acquisition. Learn more: https://github.com/drandyhaas/Haasoscope
+Haasoscope is an open-source, USB oscilloscope with FPGA-based data acquisition. Learn more: https://github.com/drandyhaas/Haasoscope
 ## 🤝 Contributing
 
 Pull requests welcome! For major changes, please open an issue first to discuss what you'd like to change.
 ## 📄 License
 
-	This project is licensed under the MIT License. See the LICENSE.txt file for details.
+This project is licensed under the MIT License. See the LICENSE.txt file for details.
