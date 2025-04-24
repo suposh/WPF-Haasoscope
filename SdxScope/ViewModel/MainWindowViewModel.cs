@@ -142,7 +142,7 @@ namespace SdxScope
                 HorizontalAlignment = OxyPlot.HorizontalAlignment.Left,
                 VerticalAlignment = OxyPlot.VerticalAlignment.Bottom
             };
-            Model.Annotations.Insert(0, bgImageAnnotation);
+            //Model.Annotations.Insert(0, bgImageAnnotation);
             Model.Axes.Add(new LinearAxis { Position = AxisPosition.Left});
             
             Channel_A = new LineSeries()

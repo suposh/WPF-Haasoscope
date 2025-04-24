@@ -2,6 +2,7 @@
     x:Class="SdxScope.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:SdxScope.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:SdxScope"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -181,9 +182,14 @@
                 <ColumnDefinition Width="6*" />
                 <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
+            <Controls:OscilloscopeGrid
+                Grid.Column="0"
+                Margin="48,25,26,44"
+                Panel.ZIndex="0" />
             <oxy:PlotView
                 Grid.Column="0"
                 Margin="10"
+                Panel.ZIndex="1"
                 Background="Transparent"
                 Model="{Binding Model}" />
             <Grid Grid.Column="1">
