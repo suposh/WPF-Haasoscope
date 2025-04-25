@@ -10,6 +10,7 @@
     Title="SDX Scope"
     Width="930"
     Height="650"
+    ThemeMode="Light"
     mc:Ignorable="d">
     <Window.Resources>
         <Style x:Key="RoundedButtonStyle" TargetType="{x:Type Button}">
@@ -55,10 +56,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
                         <Grid>
-                            <ContentPresenter
-                                Margin="60,0,5,0"
-                                VerticalAlignment="Center"
-                                RecognizesAccessKey="True" />
+
                             <!--  Track  -->
                             <Border
                                 x:Name="SwitchBackground"
@@ -180,15 +178,18 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="6*" />
-                <ColumnDefinition Width="4*" />
+                <ColumnDefinition
+                    Width="4*"
+                    MinWidth="400"
+                    MaxWidth="450" />
             </Grid.ColumnDefinitions>
             <Controls:OscilloscopeGrid
                 Grid.Column="0"
-                Margin="48,25,26,44"
+                Margin="38,25,16,34"
                 Panel.ZIndex="0" />
             <oxy:PlotView
                 Grid.Column="0"
-                Margin="10"
+                Margin="0,10,0,0"
                 Panel.ZIndex="1"
                 Background="Transparent"
                 Model="{Binding Model}" />
@@ -197,93 +198,151 @@
                     <RowDefinition Height="50" />
                     <RowDefinition Height="50" />
                     <RowDefinition Height="50" />
-                    <RowDefinition Height="80" />
                     <RowDefinition Height="180" />
+                    <RowDefinition Height="80" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="110" />
+                    <RowDefinition Height="150" />
                 </Grid.RowDefinitions>
 
-                <StackPanel
+                <TextBlock
                     Grid.Row="0"
-                    Height="30"
-                    Margin="0,10,0,5"
-                    Orientation="Horizontal">
+                    Height="20"
+                    Margin="0,10,0,0"
+                    VerticalAlignment="Center"
+                    FontSize="18"
+                    FontWeight="Medium"
+                    Text="Resolution Controls" />
+                <Grid Grid.Row="1" Margin="0,10,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".3*" />
+                        <ColumnDefinition Width=".3*" />
+                        <ColumnDefinition Width=".3*" />
+                    </Grid.ColumnDefinitions>
                     <TextBlock
-                        Width="50"
-                        Margin="5"
-                        HorizontalAlignment="Right"
-                        FontWeight="Medium"
-                        Text="Setup" />
-                    <ToggleButton
-                        Width="150"
-                        Margin="0,0,5,0"
-                        HorizontalAlignment="Right"
-                        Command="{Binding ConnectBoardCommand}"
-                        CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
-                        Content="{Binding ConnectionButton, Mode=OneWay}"
-                        IsChecked="{Binding Uart.ConnectionStatus, Mode=OneWay}" />
-                    <Button
-                        Width="80"
-                        Margin="15,0,5,0"
+                        Grid.Column="0"
                         HorizontalAlignment="Left"
-                        Command="{Binding StartDataLoop}"
-                        Content="Get Data"
-                        Style="{StaticResource AccentButtonStyle}" />
-                </StackPanel>
-                <StackPanel
-                    Grid.Row="1"
-                    Margin="0,5,0,5"
-                    Orientation="Horizontal">
-                    <TextBlock
-                        Width="100"
-                        Margin="5"
                         VerticalAlignment="Center"
-                        FontSize="14"
+                        FontSize="18"
                         FontWeight="Medium"
-                        Text="Time Base" />
+                        Text="Horizontal" />
                     <Button
-                        Width="80"
-                        Margin="20,0,0,0"
-                        HorizontalAlignment="Right"
+                        Grid.Column="1"
+                        Margin="10,0,10,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
                         Command="{Binding DownsampleIncrease}"
                         Content="Increase"
                         Style="{StaticResource AccentButtonStyle}" />
                     <Button
-                        Width="80"
-                        Margin="20,0,20,0"
-                        HorizontalAlignment="Right"
+                        Grid.Column="2"
+                        Margin="10,0,10,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
                         Command="{Binding DownsampleDecrease}"
                         Content="Decrease"
                         Style="{StaticResource AccentButtonStyle}" />
-                </StackPanel>
-                <StackPanel
-                    Grid.Row="2"
-                    Margin="0,5,0,5"
-                    Orientation="Horizontal">
+                </Grid>
+                <Grid Grid.Row="2" Margin="0,10,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".3*" />
+                        <ColumnDefinition Width=".3*" />
+                        <ColumnDefinition Width=".3*" />
+                    </Grid.ColumnDefinitions>
+
                     <TextBlock
-                        Width="100"
+                        Grid.Column="0"
                         Height="20"
-                        Margin="5"
-                        FontSize="14"
+                        VerticalAlignment="Center"
+                        FontSize="18"
                         FontWeight="Medium"
-                        Text="Voltage Controls" />
+                        Text="Vertical" />
                     <Button
-                        Width="80"
-                        Margin="20,0,0,0"
-                        HorizontalAlignment="Right"
+                        Grid.Column="1"
+                        Margin="10,0,10,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
                         Command="{Binding DataScaleIncrease}"
                         Content="Increase"
                         Style="{StaticResource AccentButtonStyle}" />
                     <Button
-                        Width="80"
-                        Margin="20,0,0,0"
-                        HorizontalAlignment="Right"
+                        Grid.Column="2"
+                        Margin="10,0,10,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
                         Command="{Binding DataScaleDecrease}"
                         Content="Decrease"
                         Style="{StaticResource AccentButtonStyle}" />
-                </StackPanel>
+                </Grid>
+                <Grid Grid.Row="3" Margin="0,25,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".2*" />
+                        <ColumnDefinition Width=".3*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="18"
+                        FontWeight="Medium"
+                        Text="Toggle Options" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="Auto Trigger" />
+                    <CheckBox
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalContentAlignment="Bottom"
+                        Style="{StaticResource ToggleSwitchStyle}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="Gain 1X || 10X" />
+                    <CheckBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource ToggleSwitchStyle}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="2X OverSampling" />
+                    <CheckBox
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ToggleSwitchStyle}" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="Coupling DC || AC" />
+                    <CheckBox
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Coupling DC/AC"
+                        Style="{StaticResource ToggleSwitchStyle}" />
+                </Grid>
                 <GroupBox
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="0,5,0,5"
                     Header="Trigger Menu">
                     <StackPanel Margin="0,0,0,0" Orientation="Vertical">
@@ -318,59 +377,82 @@
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>
-                <StackPanel Grid.Row="4">
-                    <TextBlock
-                        Height="20"
-                        Margin="5"
-                        FontSize="14"
-                        FontWeight="Medium"
-                        Text="Toggle Options" />
-
-                    <CheckBox
-                        Width="160"
-                        Height="30"
-                        Margin="15,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalContentAlignment="Center"
-                        Content="Auto Trigger"
-                        Style="{StaticResource ToggleSwitchStyle}" />
-                    <CheckBox
-                        Width="160"
-                        Height="30"
-                        Margin="15,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalContentAlignment="Center"
-                        Content="Gain"
-                        Style="{StaticResource ToggleSwitchStyle}" />
-                    <CheckBox
-                        Width="180"
-                        Height="30"
-                        Margin="15,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalContentAlignment="Center"
-                        Content="2X OverSampling"
-                        Style="{StaticResource ToggleSwitchStyle}" />
-                    <TextBlock
-                        Margin="5"
-                        HorizontalAlignment="Left"
-                        FontSize="14"
-                        FontWeight="Medium"
-                        Text="Coupling" />
-                    <CheckBox
-                        Width="180"
-                        Height="30"
-                        Margin="15,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalContentAlignment="Center"
-                        Content="Coupling DC/AC"
-                        Style="{StaticResource ToggleSwitchStyle}" />
-                </StackPanel>
                 <StackPanel Grid.Row="5" />
                 <StackPanel
                     Grid.Row="6"
                     Margin="0,0,0,30"
                     VerticalAlignment="Bottom">
-                    <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
+                    <Grid Margin="0,10,20,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".3*" />
+                            <ColumnDefinition Width=".3*" />
+                            <ColumnDefinition Width=".3*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="Medium"
+                            Text="Setup" />
+                        <ToggleButton
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Command="{Binding ConnectBoardCommand}"
+                            CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                            Content="{Binding ConnectionButton, Mode=OneWay}"
+                            IsChecked="{Binding Uart.ConnectionStatus, Mode=OneWay}" />
+                        <Button
+                            Grid.Column="2"
+                            Margin="10,0,10,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Command="{Binding StartDataLoop}"
+                            Content="Get Data"
+                            Style="{StaticResource AccentButtonStyle}" />
+                    </Grid>
+                    <Grid Margin="0,10,20,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".3*" />
+                            <ColumnDefinition Width=".3*" />
+                            <ColumnDefinition Width=".3*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="Medium"
+                            Text="Device  " />
+                        <ComboBox
+                            Grid.Column="1"
+                            Padding="5,1"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            VerticalContentAlignment="Center"
+                            FontSize="14"
+                            FontWeight="Medium"
+                            ItemsSource="{Binding AvailableCOMDevices, Mode=OneWay}"
+                            SelectedIndex="{Binding SelectedCOMDevice, Mode=TwoWay}" />
+                        <Button
+                            Grid.Column="2"
+                            Margin="10,0,10,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Command="{Binding UpdateSelectedCOMPort}"
+                            Content="Refresh"
+                            FontSize="14"
+                            Style="{StaticResource AccentButtonStyle}" />
+                    </Grid>
+                    <StackPanel
+                        Margin="0,10,0,5"
+                        VerticalAlignment="Bottom"
+                        Orientation="Horizontal" />
+                    <StackPanel
+                        Margin="0,0,20,0"
+                        HorizontalAlignment="right"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
                         <TextBlock
                             Height="25"
                             Margin="0,0,0,5"
@@ -390,39 +472,8 @@
                             FontWeight="Medium"
                             Text="{Binding BoardHandle.BoardFirmware, Mode=OneWay}" />
                     </StackPanel>
-                    <StackPanel
-                        Margin="0,0,0,15"
-                        VerticalAlignment="Bottom"
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Height="30"
-                            Margin="0,5,0,0"
-                            VerticalAlignment="Center"
-                            FontSize="16"
-                            FontWeight="Medium"
-                            Text="Device  " />
-                        <ComboBox
-                            Width="120"
-                            Height="30"
-                            MinWidth="70"
-                            Margin="0,0,0,0"
-                            Padding="5,1"
-                            VerticalAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            FontSize="14"
-                            FontWeight="Medium"
-                            ItemsSource="{Binding AvailableCOMDevices, Mode=OneWay}"
-                            SelectedIndex="{Binding SelectedCOMDevice, Mode=TwoWay}" />
-                        <Button
-                            Width="70"
-                            Height="30"
-                            Margin="20,0,0,0"
-                            VerticalAlignment="Center"
-                            Command="{Binding UpdateSelectedCOMPort}"
-                            Content="Refresh"
-                            FontSize="14"
-                            Style="{StaticResource AccentButtonStyle}" />
-                    </StackPanel>
+
+
                 </StackPanel>
             </Grid>
         </Grid>
