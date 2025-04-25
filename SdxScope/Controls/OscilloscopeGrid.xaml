@@ -5,13 +5,13 @@
     xmlns:local="clr-namespace:SdxScope.Controls"
     Loaded="UserControl_Loaded"
     SizeChanged="UserControl_SizeChanged">
-    <Grid x:Name="RootGrid" Background="Black">
+    <Grid x:Name="RootGrid" Background="CadetBlue">
         <Canvas x:Name="HorizontalLinesCanvas" />
         <Canvas x:Name="VerticalLinesCanvas" />
 
         <Line
             x:Name="VerticalCenterLine"
-            Stroke="Lime"
+            Stroke="White"
             StrokeThickness="1"
             X1="0"
             X2="0"
@@ -20,7 +20,7 @@
 
         <Line
             x:Name="HorizontalCenterLine"
-            Stroke="Lime"
+            Stroke="White"
             StrokeThickness="1"
             X1="0"
             X2="0"
