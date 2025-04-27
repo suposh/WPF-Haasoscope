@@ -198,7 +198,9 @@
                     <RowDefinition Height="50" />
                     <RowDefinition Height="50" />
                     <RowDefinition Height="50" />
-                    <RowDefinition Height="180" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="150" />
+                    <RowDefinition Height="20" />
                     <RowDefinition Height="80" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="150" />
@@ -273,7 +275,13 @@
                         Content="Decrease"
                         Style="{StaticResource AccentButtonStyle}" />
                 </Grid>
-                <Grid Grid.Row="3" Margin="0,25,20,0">
+                <Separator
+                    Grid.Row="3"
+                    Height="1"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Stretch"
+                    BorderBrush="Gray" />
+                <Grid Grid.Row="4" Margin="0,0,20,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width=".2*" />
                         <ColumnDefinition Width=".3*" />
@@ -341,8 +349,14 @@
                         Content="Coupling DC/AC"
                         Style="{StaticResource ToggleSwitchStyle}" />
                 </Grid>
+                <Separator
+                    Grid.Row="5"
+                    Height="1"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Stretch"
+                    BorderBrush="Gray" />
                 <GroupBox
-                    Grid.Row="4"
+                    Grid.Row="6"
                     Margin="0,5,0,5"
                     Header="Trigger Menu">
                     <StackPanel Margin="0,0,0,0" Orientation="Vertical">
@@ -377,9 +391,9 @@
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>
-                <StackPanel Grid.Row="5" />
+                <StackPanel Grid.Row="7" />
                 <StackPanel
-                    Grid.Row="6"
+                    Grid.Row="8"
                     Margin="0,0,0,30"
                     VerticalAlignment="Bottom">
                     <Grid Margin="0,10,20,0">
@@ -514,8 +528,10 @@
                 <TextBlock
                     Margin="5,0,0,3"
                     VerticalAlignment="Center"
-                    FontSize="16"
-                    Text="{Binding BoardHandle.BoardUniqueId, Mode=OneWay}" />
+                    FontSize="16">
+                    <TextBlock Text="SR: " />
+                    <TextBlock Text="{Binding BoardHandle.BoardUniqueId, Mode=OneWay}" />
+                </TextBlock>
             </StackPanel>
 
         </Grid>
