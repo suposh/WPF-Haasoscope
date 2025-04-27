@@ -24,8 +24,8 @@ namespace SdxScope
             DevicePort.DataBits = 8;
             DevicePort.StopBits = StopBits.Two;
             DevicePort.Handshake = Handshake.None;
-            DevicePort.ReadTimeout = 1500;
-            DevicePort.WriteTimeout = 1500;
+            DevicePort.ReadTimeout = 500;
+            DevicePort.WriteTimeout = 500;
         }
 
         public void ConnectBoard(String PortName)

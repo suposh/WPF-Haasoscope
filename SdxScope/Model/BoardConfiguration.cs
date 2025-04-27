@@ -19,25 +19,48 @@ namespace SdxScope
             get
             {
                 byte[] data = new byte[] { (byte)(30 + (byte)boardId), 142 };
-                byte[] result = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+                byte[] result = new byte[8];
+                int maxRetries = 5; // try 5 times
+                int attempt = 0;
+
+                DevicePort.DiscardInBuffer();
+                DevicePort.DiscardOutBuffer();
+
                 DevicePort.Write(data, 0, data.Length);
-                Delay(10);
-                try
+
+                Delay(10); // short delay for device to respond
+
+                while (attempt < maxRetries)
                 {
-                    int readCount = DevicePort.Read(result, 0, 8);
-                    if (readCount != 8)
+                    try
                     {
-                        throw new Exception("Recieved corrupt or incomplete Data");
+                        int totalBytesRead = 0;
+                        while (totalBytesRead < 8)
+                        {
+                            int bytesRead = DevicePort.Read(result, totalBytesRead, 8 - totalBytesRead);
+                            if (bytesRead == 0)
+                            {
+                                throw new Exception("No data read from device");
+                            }
+                            totalBytesRead += bytesRead;
+                        }
+
+                        // Successfully read 8 bytes
+                        result = result.Reverse().ToArray();
+                        boardUniqueId = $"{BitConverter.ToUInt64(result, 0):X}";
+                        TraceMessage($"Board Unique ID fetched: {boardUniqueId}");
+                        return boardUniqueId;
                     }
-                    result = result.Reverse().ToArray();
+                    catch (Exception ex)
+                    {
+                        TraceMessage($"Attempt {attempt + 1} failed: {ex.Message}");
+                        attempt++;
+                        Delay(20); // delay before retry
+                    }
                 }
-                catch (Exception e)
-                {
-                    TraceMessage($"Read Failed" + $"{e.Message}");
-                }
-                boardUniqueId = $"{BitConverter.ToUInt64(result, 0):X}";
-                TraceMessage($"{boardUniqueId}");
-                return $"{boardUniqueId}";
+
+                TraceMessage($"Failed to fetch Board Unique ID after {maxRetries} attempts.");
+                return "UNKNOWN";
             }
         }
 
@@ -423,7 +446,7 @@ namespace SdxScope
             IoExp = BitConverter.ToUInt64(new byte[] {0x02, 0x21, 0x01, 0x00, 0xFF, 0xC8, 0x00, 0x00 }, 0 );       // port B on IOexp 2 are outputs 
             IoExp = BitConverter.ToUInt64(new byte[] {0x02, 0x21, 0x13, 0x00, 0xFF, 0xC8, 0x00, 0x00 }, 0 );       // port B of IOexp 2  
 
-            Trace.WriteLine("Get BoardUniqueId: " + BoardUniqueId);
+            //Trace.WriteLine("Get BoardUniqueId: " + BoardUniqueId);
 
             IoExp = BitConverter.ToUInt64(new byte[] {0x03, 0x60, 0x50, 0x87, 0xF8, 0x00, 0x00, 0x00 }, 0);
             IoExp = BitConverter.ToUInt64(new byte[] {0x03, 0x60, 0x52, 0x88, 0x34, 0x00, 0x00, 0x00 }, 0);
