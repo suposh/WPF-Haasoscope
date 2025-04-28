@@ -280,7 +280,7 @@
                         Style="{StaticResource AccentButtonStyle}" />
                 </Grid>
                 <Separator
-                    Grid.Row="3"
+                    Grid.Row="1"
                     Height="1"
                     Margin="0,0,10,0"
                     HorizontalAlignment="Stretch"
