@@ -9,8 +9,6 @@ namespace SdxScope
     {
         private SerialPort DevicePort;
 
-        public String boardUniqueId;
-
         /// <value>
         ///  Unique serial number of board
         /// </value>
@@ -18,7 +16,7 @@ namespace SdxScope
         {
             get
             {
-                byte[] data = new byte[] { (byte)(30 + (byte)boardId), 142 };
+                byte[] data = new byte[] { (byte)(30 + (byte)_BoardId), 142 };
                 byte[] result = new byte[8];
                 int maxRetries = 5; // try 5 times
                 int attempt = 0;
@@ -47,9 +45,9 @@ namespace SdxScope
 
                         // Successfully read 8 bytes
                         result = result.Reverse().ToArray();
-                        boardUniqueId = $"{BitConverter.ToUInt64(result, 0):X}";
-                        TraceMessage($"Board Unique ID fetched: {boardUniqueId}");
-                        return boardUniqueId;
+                        _BoardUniqueId = $"{BitConverter.ToUInt64(result, 0):X}";
+                        TraceMessage($"Board Unique ID fetched: {_BoardUniqueId}");
+                        return _BoardUniqueId;
                     }
                     catch (Exception ex)
                     {
@@ -63,24 +61,22 @@ namespace SdxScope
                 return "UNKNOWN";
             }
         }
-
-        private Byte boardId;
+        private String _BoardUniqueId;
 
         /// <value>
         /// Board Chain Index
         /// </value>
         public Byte BoardId
         {
-            get { return boardId; }
+            get { return _BoardId; }
             set { 
                 byte[] data = new byte[] { (byte)(0 + (byte) value), 20 };
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                boardId = value;
+                _BoardId = value;
             }
         }
-
-        private Byte boardFirmware;
+        private Byte _BoardId;
 
         /// <value>
         /// Verilog Configuration Version
@@ -89,7 +85,7 @@ namespace SdxScope
         {
             get
             {
-                byte[] data = new byte[] { (byte)(30 + (byte)boardId), 147 };
+                byte[] data = new byte[] { (byte)(30 + (byte)_BoardId), 147 };
                 DevicePort.Write(data, 0, data.Length);
                 byte Version = 0xFF;
                 try
@@ -105,27 +101,26 @@ namespace SdxScope
             }
             //set
             //{
-            //    byte[] data = new byte[] { (byte)(30 + (byte)boardId), 147 };
+            //    byte[] data = new byte[] { (byte)(30 + (byte)_BoardId), 147 };
             //    DevicePort.Write(data, 0, data.Length);
             //    try
             //    {
             //        DevicePort.Read(data, 0, 1);
-            //        boardFirmware = data[0];
-            //        Trace.WriteLine("Set Version:" + boardFirmware);
+            //        _BoardFirmware = data[0];
+            //        Trace.WriteLine("Set Version:" + _BoardFirmware);
             //    }
             //    catch(TimeoutException)
-            //    {   boardFirmware = 0xFF; }
+            //    {   _BoardFirmware = 0xFF; }
             //}
         }
-
-        private bool rollingEnabled;
+        private Byte _BoardFirmware;
 
         /// <value>
         /// Sets Enable/Disable Trigger Roll
         /// </value>
         public bool RollingEnabled
         {
-            get{ return rollingEnabled;  }
+            get{ return _RollingEnabled;  }
             set{
                 byte[] data;
                 if (DevicePort != null)
@@ -141,7 +136,7 @@ namespace SdxScope
                         DevicePort.Write(data, 0, data.Length);
                     }
                     TraceMessage(BitConverter.ToString(data, 0));
-                    rollingEnabled = value;
+                    _RollingEnabled = value;
                 }
                 else
                 {
@@ -149,204 +144,192 @@ namespace SdxScope
                 }
             }
         }
-
-        private UInt16 adcSampleSize;
+        private bool _RollingEnabled;
 
         /// <value>
         /// Command 120
         /// </value>
         public UInt16 AdcSampleSize             
         {
-            get{ return adcSampleSize;  }
+            get{ return _AdcSampleSize;  }
             set{ 
-                byte[] data = new byte[] { (byte)(120 + (byte)boardId) };
+                byte[] data = new byte[] { (byte)(120 + (byte)_BoardId) };
                 data = data.Concat(BitConverter.GetBytes(value).Reverse()).ToArray();
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                adcSampleSize = value;
+                _AdcSampleSize = value;
             }
         }
-
-        private UInt16 triggerPaddingCount;
+        private UInt16 _AdcSampleSize;
 
         /// <value>
         /// Command 121
         /// </value>
         public UInt16 TriggerPaddingCount       
         {
-            get { return triggerPaddingCount; }
+            get { return _TriggerPaddingCount; }
             set
             {
                 byte[] data = new byte[] { 121 };
                 data = data.Concat(BitConverter.GetBytes(value).Reverse()).Take(3).ToArray();
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                triggerPaddingCount = value;
+                _TriggerPaddingCount = value;
             }
         }
-
-        private UInt16 sampleTransmitCount;
+        private UInt16 _TriggerPaddingCount;
 
         /// <value>
         /// Command 122
         /// </value>
         public UInt16 SampleTransmitCount       
         {
-            get { return sampleTransmitCount;  }
+            get { return _SampleTransmitCount;  }
             set {
                 byte[] data = new byte[] { 122  };
                 data = data.Concat(BitConverter.GetBytes(value).Reverse()).ToArray();
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                sampleTransmitCount = value;
+                _SampleTransmitCount = value;
             }
         }
-
-        private Byte byteSkipCount;
+        private UInt16 _SampleTransmitCount;
 
         /// <value>
         /// Command 123
         /// </value>
         public Byte ByteSkipCount               
         {
-            get{ return byteSkipCount;  }
+            get{ return _ByteSkipCount;  }
             set{
                 byte[] data = new byte[] { (byte)(123), value };
                 //data = data;
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                byteSkipCount = value;
+                _ByteSkipCount = value;
             }
         }
-
-        private Byte downsample;
+        private Byte _ByteSkipCount;
 
         /// <value>
         /// Command 124
         /// </value>
         public Byte Downsample                  
         {
-            get{ return downsample;  }
+            get{ return _Downsample;  }
             set{
                 byte[] data = new byte[] { 124, value };
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                downsample = value; 
+                _Downsample = value; 
             }
         }
-
-        private Byte ticksToWait;
+        private Byte _Downsample;
 
         /// <value>
         /// Command 125
         /// </value>
         public Byte TicksToWait                 
         {
-            get{ return ticksToWait;  }
+            get{ return _TicksToWait;  }
             set{
                 byte[] data = new byte[] { 125, value };
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                ticksToWait = value; 
+                _TicksToWait = value; 
             }
         }
-
-        private Byte triggerThreshold;
+        private Byte _TicksToWait;
 
         /// <value>
         /// Command 127
         /// </value>
         public Byte TriggerThreshold
         {
-            get { return triggerThreshold; }
+            get { return _TriggerThreshold; }
             set
             {
                 byte[] data = new byte[] { (byte)(127), value };
                 //data = data;
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                triggerThreshold = value;
+                _TriggerThreshold = value;
                 OnPropertyChanged();
             }
         }
-
-        private UInt16 triggerTime;
+        private Byte _TriggerThreshold;
 
         /// <value>
         /// Command 129
         /// </value>
         public UInt16 TriggerTime               
         {
-            get{ return triggerTime;  }
+            get{ return _TriggerTime;  }
             set{
                 byte[] data = new byte[] { 129 };
                 data = data.Concat(BitConverter.GetBytes(value).Reverse()).ToArray();
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                triggerTime = value; 
+                _TriggerTime = value; 
             }
         }
-
-        private byte triggerEnable;
+        private UInt16 _TriggerTime;
 
         /// <value>
         /// Command 130
         /// </value>
         public byte TriggerEnable
         {
-            get { return triggerEnable; }
+            get { return _TriggerEnable; }
             set
             {
                 byte[] data = new byte[] { 130 , value };
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                triggerEnable = value;
+                _TriggerEnable = value;
             }
         }
+        private byte _TriggerEnable;
 
-
-        private UInt16 serialWaitMax;
 
         /// <value>
         /// Command 135
         /// </value>
         public UInt16 SerialWaitMax             
         {
-            get{ return this.serialWaitMax;  }
+            get{ return this._SerialWaitMax;  }
             set{
                 byte[] data = new byte[] { 135 };
                 data = data.Concat(BitConverter.GetBytes(value).Reverse()).ToArray();
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                this.serialWaitMax = value; 
+                this._SerialWaitMax = value; 
             }
         }
-
-        private UInt16 lockInShift;
+        private UInt16 _SerialWaitMax;
 
         /// <value>
         /// Command 138
         /// </value>
         public UInt16 LockInShift               
         {
-            get{ return lockInShift;  }
+            get{ return _LockInShift;  }
             set{
                 byte[] data = new byte[] { 138  };
                 data = data.Concat(BitConverter.GetBytes(value).Reverse()).ToArray();
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                lockInShift = value; 
+                _LockInShift = value; 
             }
         }
-
-        private bool hiResEnabled = false;
+        private UInt16 _LockInShift;
 
         /// <value>
         /// Command 143
         /// </value>
         public bool HiResEnabled                
         {
-            get { return hiResEnabled; }
+            get { return _HiResEnabled; }
             set
             {
                 byte[] data = new byte[] { 143 };
@@ -354,7 +337,7 @@ namespace SdxScope
                 {
                     DevicePort.Write(data, 0, data.Length);
                     TraceMessage(BitConverter.ToString(data, 0));
-                    hiResEnabled = !HiResEnabled;
+                    _HiResEnabled = !HiResEnabled;
                 }
                 else
                 {
@@ -362,42 +345,41 @@ namespace SdxScope
                 }
             }
         }
-
-        private UInt16 adcWrite;
+        private bool _HiResEnabled = false;
 
         /// <value>
         /// Command 131
         /// </value>
         public UInt16 AdcWrite
         {
-            get { return adcWrite; }
+            get { return _AdcWrite; }
             set
             {
                 byte[] data = new byte[] { 131  };
                 data = data.Concat(BitConverter.GetBytes(value).Reverse()).ToArray();
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                adcWrite = value;
+                _AdcWrite = value;
             }
         }
-
-        private UInt64 ioExp;
+        private UInt16 _AdcWrite;
 
         /// <value>
         /// 
         /// </value>
         public UInt64 IoExp
         {
-            get { return ioExp; }
+            get { return _IoExp; }
             set
             {
                 byte[] data = new byte[] { 136 };
                 data = data.Concat(BitConverter.GetBytes(value)).Take(7).ToArray();
                 DevicePort.Write(data, 0, data.Length);
                 TraceMessage(BitConverter.ToString(data, 0));
-                ioExp = value;
+                _IoExp = value;
             }
         }
+        private UInt64 _IoExp;
 
         public BoardConfiguration(Byte boardId, ref SerialPort devicePort)
         {
