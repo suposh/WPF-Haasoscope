@@ -260,6 +260,23 @@ namespace SdxScope
         private Byte _TriggerThreshold;
 
         /// <value>
+        /// Command 128
+        /// </value>
+        public bool TriggerEdgeType
+        {
+            get { return _TriggerEdgeType; }
+            set {
+                byte[] data = new byte[] { 128 };
+                data = data.Concat(BitConverter.GetBytes( !value && true )).ToArray();
+                DevicePort.Write(data, 0, data.Length);
+                TraceMessage(BitConverter.ToString(data, 0));
+                _TriggerEdgeType = value;
+            }
+        }
+        private bool _TriggerEdgeType;
+
+
+        /// <value>
         /// Command 129
         /// </value>
         public UInt16 TriggerTime               

@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
     Title="SDX Scope"
-    Width="930"
+    Width="1030"
     Height="720"
     d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
     ThemeMode="Light"
@@ -361,9 +361,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Content="Coupling DC/AC"
                         Style="{StaticResource ToggleSwitchStyle}" />
-
                 </Grid>
                 <Separator
                     Grid.Row="5"
@@ -371,10 +369,11 @@
                     Margin="0,0,10,0"
                     HorizontalAlignment="Stretch"
                     BorderBrush="Gray" />
-                <Grid Grid.Row="6" Margin="0,5,0,5">
+                <Grid Grid.Row="6" Margin="0,0,20,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width=".6*" />
                         <ColumnDefinition Width=".25*" />
+                        <ColumnDefinition Width=".1*" />
                         <ColumnDefinition Width=".6*" />
                         <ColumnDefinition Width=".25*" />
                     </Grid.ColumnDefinitions>
@@ -403,7 +402,7 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Center"
                         Command="{Binding StartDataLoop}"
                         Content="Rolling"
                         IsChecked="{Binding BoardHandle.RollingEnabled, Mode=TwoWay}"
@@ -414,18 +413,41 @@
                         Grid.Column="0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Text="Trigger Value" />
+                        FontSize="14"
+                        Text="Edge: Rising/Falling" />
                     <CheckBox
                         Grid.Row="2"
                         Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding BoardHandle.TriggerEdgeType}"
+                        Style="{StaticResource ToggleSwitchStyle}" />
+                    <Separator
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="2"
+                        Width="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Stretch"
+                        Background="Gray" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="Trigger Value" />
+                    <CheckBox
+                        Grid.Row="1"
+                        Grid.Column="4"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Command="{Binding ChannelTrigger}"
                         Style="{StaticResource ToggleSwitchStyle}" />
                     <Slider
                         Grid.Row="2"
-                        Grid.Column="2"
-                        Margin="15,0,0,0"
+                        Grid.Column="3"
+                        Grid.ColumnSpan="2"
+                        Margin="3,0,10,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         IsEnabled="{Binding Uart.ConnectionStatus}"
@@ -433,13 +455,6 @@
                         Minimum="0"
                         Orientation="Horizontal"
                         Value="{Binding BoardHandle.TriggerThreshold, Mode=TwoWay}" />
-                    <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="3"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="18"
-                        Text="{Binding BoardHandle.TriggerThreshold, Mode=OneWay}" />
                 </Grid>
                 <StackPanel Grid.Row="7" />
                 <StackPanel
