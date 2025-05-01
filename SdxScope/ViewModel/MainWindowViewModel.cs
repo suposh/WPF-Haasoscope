@@ -95,6 +95,17 @@ namespace SdxScope
             set { _UpdateRate = value; OnPropertyChanged(); }
         }
 
+        private Visibility _progressVisibility = Visibility.Collapsed;
+        public Visibility ProgressVisibility
+        {
+            get => _progressVisibility;
+            set
+            {
+                _progressVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         static public String[] GetComPort
         {
@@ -136,6 +147,7 @@ namespace SdxScope
             Uart       = new Communication(ref DevicePort);
             Model      = new PlotModel { };
             ConnectionButton = new String("Connect");
+            ProgressVisibility = Visibility.Hidden;
 
             // Setup Data polling timer
             DataFetchTimer = new();
@@ -222,18 +234,23 @@ namespace SdxScope
                                 ConnectionButton = "Disconnect";
                                 BoardHandle = new BoardConfiguration(0, ref DevicePort);
                                 BoardHandle.Initializer();
+                                ProgressVisibility = Visibility.Visible;
                             }
                             else
                             {
                                 ConnectionButton = "Connect";
                                 Uart.ConnectionStatus = false;
                                 Debug.WriteLine("Failed to Connect.");
+                                ProgressVisibility = Visibility.Hidden;
                             }
                         }
                         else
-                        { Uart.DisconnectBoard(); ConnectionButton = "Connect"; }
+                        { 
+                            Uart.DisconnectBoard();
+                            ConnectionButton = "Connect";
+                            ProgressVisibility = Visibility.Hidden;
+                        }
                     }
-                    
                 },
                 canExecute => (true)
             );
