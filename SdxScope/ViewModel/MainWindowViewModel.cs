@@ -77,6 +77,25 @@ namespace SdxScope
             set { OnPropertyChanged(); _SelectedCOMDevice = value; }
         }
 
+        private DateTime _lastFrameTime = DateTime.MinValue;
+        public DateTime LastFrameTime {
+            get { return _lastFrameTime; }
+            set { _lastFrameTime = value;  }
+        }
+        private DateTime _lastFpsUpdateTime = DateTime.MinValue;
+        private readonly TimeSpan _fpsUpdateInterval = TimeSpan.FromSeconds(1); // N = 2 seconds here
+
+        private int _frameCount = 0;
+        private double _frameTimeSum = 0.0; // Sum of frame durations (in ms)
+
+        private double _UpdateRate;
+        public double UpdateRate
+        {
+            get { return _UpdateRate; }
+            set { _UpdateRate = value; OnPropertyChanged(); }
+        }
+
+
         static public String[] GetComPort
         {
             get{
@@ -397,6 +416,38 @@ namespace SdxScope
                 }
 
                 Model.InvalidatePlot(true);
+            }
+
+            // FPS Calculation (print every N seconds)
+            DateTime current_time = DateTime.Now;
+            if (_lastFrameTime != DateTime.MinValue)
+            {
+                double frameDuration = (current_time - _lastFrameTime).TotalMilliseconds;
+                _frameTimeSum += frameDuration;
+                _frameCount++;
+            }
+
+            _lastFrameTime = current_time;
+
+            if (_lastFpsUpdateTime == DateTime.MinValue)
+            {
+                _lastFpsUpdateTime = current_time;
+            }
+            else if ((current_time - _lastFpsUpdateTime) >= _fpsUpdateInterval)
+            {
+                if (_frameCount > 0)
+                {
+                    double avgFrameTimeMs = _frameTimeSum / _frameCount;
+                    UpdateRate = 1000.0 / avgFrameTimeMs;
+                }
+                else
+                {
+                    UpdateRate = 0;
+                }
+
+                _frameTimeSum = 0.0;
+                _frameCount = 0;
+                _lastFpsUpdateTime = current_time;
             }
 
             // Adjust timer interval
