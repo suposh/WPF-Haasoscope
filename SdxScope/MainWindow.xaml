@@ -194,8 +194,10 @@
                 Panel.ZIndex="1"
                 Background="Transparent"
                 Model="{Binding Model}" />
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1" Margin="0,10,0,0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="20" />
                     <RowDefinition Height="120" />
                     <RowDefinition Height="20" />
                     <RowDefinition Height="150" />
@@ -204,8 +206,14 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="150" />
                 </Grid.RowDefinitions>
+                <TabControl>
+                    <TabItem Width="100" Header="Channel A" />
+                    <TabItem Width="100" Header="Channel B" />
+                    <TabItem Width="100" Header="Channel C" />
+                    <TabItem Width="100" Header="Channel D" />
+                </TabControl>
 
-                <Grid Grid.Row="0" Margin="0,0,10,0">
+                <Grid Grid.Row="2" Margin="0,0,10,0">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -281,12 +289,12 @@
                         Style="{StaticResource AccentButtonStyle}" />
                 </Grid>
                 <Separator
-                    Grid.Row="1"
+                    Grid.Row="3"
                     Height="1"
                     Margin="0,0,10,0"
                     HorizontalAlignment="Stretch"
                     BorderBrush="Gray" />
-                <Grid Grid.Row="2" Margin="0,0,20,0">
+                <Grid Grid.Row="4" Margin="0,0,20,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width=".6*" />
                         <ColumnDefinition Width=".25*" />
@@ -359,12 +367,12 @@
 
                 </Grid>
                 <Separator
-                    Grid.Row="3"
+                    Grid.Row="5"
                     Height="1"
                     Margin="0,0,10,0"
                     HorizontalAlignment="Stretch"
                     BorderBrush="Gray" />
-                <Grid Grid.Row="4" Margin="0,5,0,5">
+                <Grid Grid.Row="6" Margin="0,5,0,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width=".6*" />
                         <ColumnDefinition Width=".25*" />
@@ -434,18 +442,25 @@
                         FontSize="18"
                         Text="{Binding BoardHandle.TriggerThreshold, Mode=OneWay}" />
                 </Grid>
-                <StackPanel Grid.Row="5" />
+                <StackPanel Grid.Row="7" />
                 <StackPanel
-                    Grid.Row="6"
+                    Grid.Row="8"
                     Margin="0,0,0,30"
                     VerticalAlignment="Bottom">
-                    <Grid Margin="0,10,20,0">
+                    <Grid Margin="0,10,10,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width=".3*" />
                             <ColumnDefinition Width=".3*" />
                             <ColumnDefinition Width=".3*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock
+                            Grid.Row="1"
                             Grid.Column="0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
@@ -453,7 +468,9 @@
                             FontWeight="Medium"
                             Text="Setup" />
                         <ToggleButton
+                            Grid.Row="1"
                             Grid.Column="1"
+                            Margin="10,0,10,0"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
                             Command="{Binding ConnectBoardCommand}"
@@ -461,6 +478,7 @@
                             Content="{Binding ConnectionButton, Mode=OneWay}"
                             IsChecked="{Binding Uart.ConnectionStatus, Mode=OneWay}" />
                         <Button
+                            Grid.Row="1"
                             Grid.Column="2"
                             Margin="10,0,10,0"
                             HorizontalAlignment="Stretch"
@@ -468,30 +486,28 @@
                             Command="{Binding StartDataLoop}"
                             Content="Get Data"
                             Style="{StaticResource AccentButtonStyle}" />
-                    </Grid>
-                    <Grid Margin="0,10,20,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width=".3*" />
-                            <ColumnDefinition Width=".3*" />
-                            <ColumnDefinition Width=".3*" />
-                        </Grid.ColumnDefinitions>
                         <TextBlock
+                            Grid.Row="2"
                             Grid.Column="0"
                             VerticalAlignment="Center"
                             FontSize="16"
                             FontWeight="Medium"
                             Text="Device  " />
                         <ComboBox
+                            Grid.Row="2"
                             Grid.Column="1"
+                            Height="30"
+                            Margin="10,0,10,0"
                             Padding="5,1"
                             HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
+                            VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             FontSize="14"
                             FontWeight="Medium"
                             ItemsSource="{Binding AvailableCOMDevices, Mode=OneWay}"
                             SelectedIndex="{Binding SelectedCOMDevice, Mode=TwoWay}" />
                         <Button
+                            Grid.Row="2"
                             Grid.Column="2"
                             Margin="10,0,10,0"
                             HorizontalAlignment="Stretch"
@@ -500,37 +516,34 @@
                             Content="Refresh"
                             FontSize="14"
                             Style="{StaticResource AccentButtonStyle}" />
+                        <StackPanel
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="right"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Height="25"
+                                Margin="0,0,0,5"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                FontWeight="Medium">
+                                Firmware Version
+                            </TextBlock>
+                            <TextBlock
+                                Name="VersionLabel"
+                                Height="25"
+                                Margin="5,0,5,5"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                FontWeight="Medium"
+                                Text="{Binding BoardHandle.BoardFirmware, Mode=OneWay}" />
+                        </StackPanel>
                     </Grid>
-                    <StackPanel
-                        Margin="0,10,0,5"
-                        VerticalAlignment="Bottom"
-                        Orientation="Horizontal" />
-                    <StackPanel
-                        Margin="0,0,20,0"
-                        HorizontalAlignment="right"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Height="25"
-                            Margin="0,0,0,5"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="16"
-                            FontWeight="Medium">
-                            Firmware Version
-                        </TextBlock>
-                        <TextBlock
-                            Name="VersionLabel"
-                            Height="25"
-                            Margin="5,0,5,5"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="16"
-                            FontWeight="Medium"
-                            Text="{Binding BoardHandle.BoardFirmware, Mode=OneWay}" />
-                    </StackPanel>
-
-
                 </StackPanel>
             </Grid>
         </Grid>
