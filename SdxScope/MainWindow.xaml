@@ -10,6 +10,7 @@
     Title="SDX Scope"
     Width="930"
     Height="650"
+    d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
     ThemeMode="Light"
     mc:Ignorable="d">
     <Window.Resources>
@@ -185,11 +186,11 @@
             </Grid.ColumnDefinitions>
             <Controls:OscilloscopeGrid
                 Grid.Column="0"
-                Margin="38,25,16,34"
+                Margin="38,15,16,34"
                 Panel.ZIndex="0" />
             <oxy:PlotView
                 Grid.Column="0"
-                Margin="0,10,0,0"
+                Margin="0,0,0,0"
                 Panel.ZIndex="1"
                 Background="Transparent"
                 Model="{Binding Model}" />
@@ -199,7 +200,7 @@
                     <RowDefinition Height="20" />
                     <RowDefinition Height="150" />
                     <RowDefinition Height="20" />
-                    <RowDefinition Height="80" />
+                    <RowDefinition Height="120" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="150" />
                 </Grid.RowDefinitions>
@@ -287,8 +288,10 @@
                     BorderBrush="Gray" />
                 <Grid Grid.Row="2" Margin="0,0,20,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width=".2*" />
-                        <ColumnDefinition Width=".3*" />
+                        <ColumnDefinition Width=".6*" />
+                        <ColumnDefinition Width=".25*" />
+                        <ColumnDefinition Width=".6*" />
+                        <ColumnDefinition Width=".25*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30" />
@@ -331,12 +334,13 @@
                         Grid.Row="3"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        Text="2X OverSampling" />
+                        Text="HIRes Mode" />
                     <CheckBox
                         Grid.Row="3"
                         Grid.Column="1"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
+                        IsChecked="{Binding BoardHandle.HiResEnabled, Mode=TwoWay}"
                         Style="{StaticResource ToggleSwitchStyle}" />
                     <TextBlock
                         Grid.Row="4"
@@ -352,6 +356,7 @@
                         VerticalAlignment="Top"
                         Content="Coupling DC/AC"
                         Style="{StaticResource ToggleSwitchStyle}" />
+
                 </Grid>
                 <Separator
                     Grid.Row="3"
@@ -359,42 +364,76 @@
                     Margin="0,0,10,0"
                     HorizontalAlignment="Stretch"
                     BorderBrush="Gray" />
-                <GroupBox
-                    Grid.Row="4"
-                    Margin="0,5,0,5"
-                    Header="Trigger Menu">
-                    <StackPanel Margin="0,0,0,0" Orientation="Vertical">
-                        <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
+                <Grid Grid.Row="4" Margin="0,5,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".6*" />
+                        <ColumnDefinition Width=".25*" />
+                        <ColumnDefinition Width=".6*" />
+                        <ColumnDefinition Width=".25*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="4"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="18"
+                        FontWeight="Medium"
+                        Text="Trigger Options" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="Rolling Trigger" />
+                    <CheckBox
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Command="{Binding StartDataLoop}"
+                        Content="Rolling"
+                        IsChecked="{Binding BoardHandle.RollingEnabled, Mode=TwoWay}"
+                        Style="{StaticResource ToggleSwitchStyle}" />
 
-                            <CheckBox
-                                Width="150"
-                                Height="30"
-                                Margin="10,10,10,0"
-                                VerticalAlignment="Center"
-                                Command="{Binding ChannelTrigger}"
-                                Content="Trigger Value"
-                                Style="{StaticResource ToggleSwitchStyle}" />
-
-                            <Slider
-                                Width="135"
-                                Height="30"
-                                Margin="0,10,10,0"
-                                VerticalAlignment="Center"
-                                IsEnabled="{Binding Uart.ConnectionStatus}"
-                                Maximum="255"
-                                Minimum="0"
-                                Orientation="Horizontal"
-                                Value="{Binding BoardHandle.TriggerThreshold, Mode=TwoWay}" />
-                            <TextBlock
-                                Width="50"
-                                Height="20"
-                                Margin="0,5,0,0"
-                                VerticalAlignment="Center"
-                                FontSize="18"
-                                Text="{Binding BoardHandle.TriggerThreshold, Mode=OneWay}" />
-                        </StackPanel>
-                    </StackPanel>
-                </GroupBox>
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="Trigger Value" />
+                    <CheckBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Command="{Binding ChannelTrigger}"
+                        Style="{StaticResource ToggleSwitchStyle}" />
+                    <Slider
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Margin="15,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        IsEnabled="{Binding Uart.ConnectionStatus}"
+                        Maximum="255"
+                        Minimum="0"
+                        Orientation="Horizontal"
+                        Value="{Binding BoardHandle.TriggerThreshold, Mode=TwoWay}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="18"
+                        Text="{Binding BoardHandle.TriggerThreshold, Mode=OneWay}" />
+                </Grid>
                 <StackPanel Grid.Row="5" />
                 <StackPanel
                     Grid.Row="6"
@@ -523,7 +562,13 @@
                     Margin="5,0,0,3"
                     VerticalAlignment="Center"
                     FontSize="16"
-                    Text="Streaming data FPS: 5.04" />
+                    Text="Streaming data FPS: " />
+                <TextBlock
+                    Margin="5,0,0,3"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    Text="{Binding UpdateRate, Mode=OneWay, StringFormat=FPS: {0:F2}}" />
+
             </StackPanel>
             <StackPanel
                 Grid.Column="2"
