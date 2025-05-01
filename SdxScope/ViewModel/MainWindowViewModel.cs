@@ -8,6 +8,7 @@ using OxyPlot;
 using OxyPlot.Annotations;
 using System.IO;
 using System.Windows;
+using SdxScope.Model;
 
 namespace SdxScope
 {
@@ -69,7 +70,7 @@ namespace SdxScope
             get { return _AvailableCOMDevices;  }
             set { OnPropertyChanged(); _AvailableCOMDevices = value; }
         }
-
+        
         private int _SelectedCOMDevice;
         public int SelectedCOMDevice
         {
@@ -106,17 +107,6 @@ namespace SdxScope
             }
         }
 
-
-        static public String[] GetComPort
-        {
-            get{
-                String[] COMDevicesList = SerialPort.GetPortNames();
-                for (int i = 0; i < COMDevicesList.Length; i++)
-                    Trace.WriteLine($"{i}: {COMDevicesList[i]}");
-                return COMDevicesList;
-            }
-        }
-
         public LineSeries Channel_A, Channel_B, Channel_C, Channel_D;
 
         //public Thread readThread;
@@ -142,12 +132,12 @@ namespace SdxScope
         {
             //Items = new ObservableCollection<Item>();
             SelectedCOMDevice = 0;
-            AvailableCOMDevices = GetComPort.OrderBy(o => o).ToArray();
             DevicePort = new SerialPort();
             Uart       = new Communication(ref DevicePort);
             Model      = new PlotModel { };
             ConnectionButton = new String("Connect");
             ProgressVisibility = Visibility.Hidden;
+            AvailableCOMDevices = SerialHelper.GetComPortDescriptions();
 
             // Setup Data polling timer
             DataFetchTimer = new();
@@ -228,7 +218,7 @@ namespace SdxScope
                     {
                         if (isChecked)
                         {
-                            Uart.ConnectBoard(AvailableCOMDevices[SelectedCOMDevice]);
+                            Uart.ConnectBoard(SerialHelper.GetComPorts().ElementAt(SelectedCOMDevice));
                             if (Uart.ConnectionStatus)
                             {
                                 ConnectionButton = "Disconnect";
@@ -309,7 +299,7 @@ namespace SdxScope
             );
 
             UpdateSelectedCOMPort =     new RelayCommand(
-                execute => { AvailableCOMDevices = GetComPort;  },
+                execute => { AvailableCOMDevices = SerialHelper.GetComPortDescriptions();  },
                 canExecute => (true)
             );
         }

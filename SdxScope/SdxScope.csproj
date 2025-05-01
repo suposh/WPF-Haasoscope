@@ -22,6 +22,7 @@
     <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
     <PackageReference Include="ScottPlot.WPF" Version="5.0.47" />
     <PackageReference Include="System.IO.Ports" Version="9.0.4" />
+    <PackageReference Include="System.Management" Version="9.0.4" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\scope_bg.png">
