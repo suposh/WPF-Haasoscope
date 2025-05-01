@@ -9,7 +9,7 @@
     xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
     Title="SDX Scope"
     Width="930"
-    Height="650"
+    Height="720"
     d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
     ThemeMode="Light"
     mc:Ignorable="d">
@@ -204,7 +204,7 @@
                     <RowDefinition Height="20" />
                     <RowDefinition Height="120" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="150" />
+                    <RowDefinition Height="160" />
                 </Grid.RowDefinitions>
                 <TabControl Grid.Row="0">
                     <TabItem Width="100" Header="Channel A" />
@@ -452,6 +452,7 @@
                             <RowDefinition Height="40" />
                             <RowDefinition Height="40" />
                             <RowDefinition Height="40" />
+                            <RowDefinition Height="10" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width=".3*" />
@@ -492,27 +493,27 @@
                             FontSize="16"
                             FontWeight="Medium"
                             Text="Select Port" />
-                        <StackPanel Grid.Row="2" Grid.Column="1">
-
-                            <ComboBox
-                                Height="30"
-                                Margin="10,0,10,0"
-                                Padding="5,1"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                FontSize="14"
-                                FontWeight="Medium"
-                                ItemsSource="{Binding AvailableCOMDevices, Mode=OneWay}"
-                                SelectedIndex="{Binding SelectedCOMDevice, Mode=TwoWay}" />
-                            <ProgressBar
-                                Margin="15,0,15,0"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Bottom"
-                                IsIndeterminate="True"
-                                Visibility="{Binding ProgressVisibility}" />
-                        </StackPanel>
-
+                        <ComboBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Height="32"
+                            Margin="10,0,10,0"
+                            Padding="5,1"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            FontSize="14"
+                            FontWeight="Medium"
+                            ItemsSource="{Binding AvailableCOMDevices, Mode=OneWay}"
+                            SelectedIndex="{Binding SelectedCOMDevice, Mode=TwoWay}" />
+                        <ProgressBar
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="15,0,15,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            IsIndeterminate="True"
+                            Visibility="{Binding ProgressVisibility}" />
                         <Button
                             Grid.Row="2"
                             Grid.Column="2"
