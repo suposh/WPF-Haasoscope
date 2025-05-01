@@ -51,8 +51,8 @@
         </Style>
         <Style x:Key="ToggleSwitchStyle" TargetType="CheckBox">
             <Setter Property="Focusable" Value="False" />
-            <Setter Property="Width" Value="50" />
-            <Setter Property="Height" Value="25" />
+            <Setter Property="Width" Value="35" />
+            <Setter Property="Height" Value="16" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
@@ -61,18 +61,18 @@
                             <!--  Track  -->
                             <Border
                                 x:Name="SwitchBackground"
-                                Width="50"
-                                Height="25"
+                                Width="35"
+                                Height="16"
                                 Padding="0"
                                 HorizontalAlignment="Left"
                                 Background="DarkGray"
-                                CornerRadius="12" />
+                                CornerRadius="7.5" />
 
                             <!--  Thumb  -->
                             <Ellipse
                                 x:Name="SwitchThumb"
-                                Width="20"
-                                Height="20"
+                                Width="10"
+                                Height="10"
                                 Margin="2"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
@@ -92,8 +92,8 @@
                                             <DoubleAnimation
                                                 Storyboard.TargetName="SwitchThumbTransform"
                                                 Storyboard.TargetProperty="X"
-                                                To="24"
-                                                Duration="0:0:0.1" />
+                                                To="20"
+                                                Duration="0:0:0.03" />
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </Trigger.EnterActions>
@@ -206,7 +206,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="130" />
                 </Grid.RowDefinitions>
-                <TabControl Grid.Row="0">
+                <TabControl Grid.Row="0" HorizontalAlignment="Stretch">
                     <TabItem Width="100" Header="Channel A" />
                     <TabItem Width="100" Header="Channel B" />
                     <TabItem Width="100" Header="Channel C" />
@@ -295,10 +295,11 @@
                     BorderBrush="Gray" />
                 <Grid Grid.Row="4" Margin="0,0,20,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width=".6*" />
-                        <ColumnDefinition Width=".25*" />
-                        <ColumnDefinition Width=".6*" />
-                        <ColumnDefinition Width=".25*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30" />
@@ -324,8 +325,8 @@
                     <CheckBox
                         Grid.Row="1"
                         Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        VerticalContentAlignment="Bottom"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
                         Style="{StaticResource ToggleSwitchStyle}" />
                     <TextBlock
                         Grid.Row="2"
@@ -335,7 +336,8 @@
                     <CheckBox
                         Grid.Row="2"
                         Grid.Column="1"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
                         Style="{StaticResource ToggleSwitchStyle}" />
                     <TextBlock
                         Grid.Row="3"
@@ -345,8 +347,8 @@
                     <CheckBox
                         Grid.Row="3"
                         Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
                         IsChecked="{Binding BoardHandle.HiResEnabled, Mode=TwoWay}"
                         Style="{StaticResource ToggleSwitchStyle}" />
                     <TextBlock
@@ -359,8 +361,8 @@
                     <CheckBox
                         Grid.Row="4"
                         Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
                         Style="{StaticResource ToggleSwitchStyle}" />
                 </Grid>
                 <Separator
@@ -371,11 +373,11 @@
                     BorderBrush="Gray" />
                 <Grid Grid.Row="6" Margin="0,0,20,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width=".6*" />
-                        <ColumnDefinition Width=".25*" />
-                        <ColumnDefinition Width=".1*" />
-                        <ColumnDefinition Width=".6*" />
-                        <ColumnDefinition Width=".25*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30" />
@@ -401,7 +403,7 @@
                     <CheckBox
                         Grid.Row="1"
                         Grid.Column="1"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Command="{Binding StartDataLoop}"
                         Content="Rolling"
@@ -418,7 +420,7 @@
                     <CheckBox
                         Grid.Row="2"
                         Grid.Column="1"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         IsChecked="{Binding BoardHandle.TriggerEdgeType}"
                         Style="{StaticResource ToggleSwitchStyle}" />
@@ -439,7 +441,7 @@
                     <CheckBox
                         Grid.Row="1"
                         Grid.Column="4"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Command="{Binding ChannelTrigger}"
                         Style="{StaticResource ToggleSwitchStyle}" />
@@ -447,7 +449,7 @@
                         Grid.Row="2"
                         Grid.Column="3"
                         Grid.ColumnSpan="2"
-                        Margin="3,0,10,0"
+                        Margin="3,0,3,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
                         IsEnabled="{Binding Uart.ConnectionStatus}"
