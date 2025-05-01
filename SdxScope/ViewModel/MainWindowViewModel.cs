@@ -64,6 +64,8 @@ namespace SdxScope
             }
         }
 
+        LinearAxis yAxis;
+
         private String[] _AvailableCOMDevices;
         public String[] AvailableCOMDevices
         {
@@ -135,6 +137,17 @@ namespace SdxScope
             DevicePort = new SerialPort();
             Uart       = new Communication(ref DevicePort);
             Model      = new PlotModel { };
+            yAxis      = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Minimum = 0,
+                Maximum = 255,
+                Title = "Voltage (V)",
+
+                // Custom label formatter: map ADC to voltage on the fly
+                LabelFormatter = val => ((val / 255.0 * 6.6) - 3.3).ToString("F2")
+            };
+
             ConnectionButton = new String("Connect");
             ProgressVisibility = Visibility.Hidden;
             AvailableCOMDevices = SerialHelper.GetComPortDescriptions();
@@ -164,7 +177,8 @@ namespace SdxScope
                 VerticalAlignment = OxyPlot.VerticalAlignment.Bottom
             };
             //Model.Annotations.Insert(0, bgImageAnnotation);
-            Model.Axes.Add(new LinearAxis { Position = AxisPosition.Left});
+            //Model.Axes.Add(new LinearAxis { Position = AxisPosition.Left});
+            mooodle.Axes.Add(yAxis);
             
             Channel_A = new LineSeries()
             {
