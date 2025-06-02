@@ -349,7 +349,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        IsChecked="{Binding BoardHandle.HiResEnabled, Mode=TwoWay}"
+                        IsChecked="{Binding BoardHandle.HiResEnabled, Mode=OneWayToSource}"
                         Style="{StaticResource ToggleSwitchStyle}" />
                     <TextBlock
                         Grid.Row="4"
@@ -407,7 +407,7 @@
                         VerticalAlignment="Center"
                         Command="{Binding StartDataLoop}"
                         Content="Rolling"
-                        IsChecked="{Binding BoardHandle.RollingEnabled, Mode=TwoWay}"
+                        IsChecked="{Binding BoardHandle.RollingEnabled, Mode=OneWayToSource}"
                         Style="{StaticResource ToggleSwitchStyle}" />
 
                     <TextBlock
@@ -422,7 +422,8 @@
                         Grid.Column="1"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        IsChecked="{Binding BoardHandle.TriggerEdgeType}"
+                        IsChecked="{Binding BoardHandle.TriggerEdgeType, Mode=OneWayToSource}"
+                        IsEnabled="{Binding Uart.ConnectionStatus}"
                         Style="{StaticResource ToggleSwitchStyle}" />
                     <Separator
                         Grid.Row="1"
@@ -443,7 +444,7 @@
                         Grid.Column="4"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Command="{Binding ChannelTrigger}"
+                        Command="{Binding ChannelTrigger, Mode=OneWayToSource}"
                         Style="{StaticResource ToggleSwitchStyle}" />
                     <Slider
                         Grid.Row="2"
